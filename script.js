@@ -394,6 +394,13 @@
     saveCartToLocalStorage();
     updateCartBadge();
     showToast('Producto agregado al carrito');
+    // Update cart UI if drawer is open
+    const cartDrawer = document.getElementById('cartDrawer');
+    const cartPanel = document.getElementById('cartPanel');
+    if (!cartDrawer.classList.contains('pointer-events-none')) {
+      renderCartItems();
+      updateCartSummary();
+    }
     // animate cart button
     const cartBtn = document.getElementById('cartButton');
     cartBtn.classList.add('scale-110');
@@ -511,11 +518,13 @@
       msgEl.classList.remove('hidden');
       input.value = '';
       updateCartSummary();
+      showToast(`Cupón ${code} aplicado`, 'success');
     } else {
       state.appliedCoupon = null;
       msgEl.textContent = 'Cupón no válido';
       msgEl.classList.remove('hidden');
       updateCartSummary();
+      showToast('Cupón no válido', 'error');
     }
   }
 
@@ -643,14 +652,29 @@
     const cartBtn = document.getElementById('cartButton');
     const cartDrawer = document.getElementById('cartDrawer');
     const closeCart = document.getElementById('closeCart');
+    const cartPanel = document.getElementById('cartPanel');
     cartBtn.addEventListener('click', () => {
       cartDrawer.classList.toggle('pointer-events-none');
-      const panel = document.getElementById('cartPanel');
-      panel.classList.toggle('translate-x-full');
+      cartPanel.classList.toggle('translate-x-full');
+      // When opening, focus on close button
+      if (!cartDrawer.classList.contains('pointer-events-none')) {
+        closeCart.focus();
+      }
     });
     closeCart.addEventListener('click', () => {
       cartDrawer.classList.add('pointer-events-none');
-      document.getElementById('cartPanel').classList.add('translate-x-full');
+      cartPanel.classList.add('translate-x-full');
+    });
+    // Close when clicking on backdrop
+    cartDrawer.addEventListener('click', (e) => {
+      if (e.target === cartDrawer) {
+        cartDrawer.classList.add('pointer-events-none');
+        cartPanel.classList.add('translate-x-full');
+      }
+    });
+    // Prevent closing when clicking inside panel
+    cartPanel.addEventListener('click', (e) => {
+      e.stopPropagation();
     });
 
     // Apply coupon button
