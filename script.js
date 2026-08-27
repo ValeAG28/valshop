@@ -653,23 +653,29 @@
     const cartDrawer = document.getElementById('cartDrawer');
     const closeCart = document.getElementById('closeCart');
     const cartPanel = document.getElementById('cartPanel');
-    cartBtn.addEventListener('click', () => {
-      cartDrawer.classList.toggle('pointer-events-none');
-      cartPanel.classList.toggle('translate-x-full');
-      // When opening, focus on close button
-      if (!cartDrawer.classList.contains('pointer-events-none')) {
-        closeCart.focus();
+    const updateCartState = (open) => {
+      if (open) {
+        cartDrawer.classList.remove('pointer-events-none');
+        cartPanel.classList.remove('translate-x-full');
+        requestAnimationFrame(() => {
+          closeCart.focus();
+        });
+      } else {
+        cartDrawer.classList.add('pointer-events-none');
+        cartPanel.classList.add('translate-x-full');
       }
+    };
+    cartBtn.addEventListener('click', () => {
+      const isOpen = !cartPanel.classList.contains('translate-x-full');
+      updateCartState(!isOpen);
     });
     closeCart.addEventListener('click', () => {
-      cartDrawer.classList.add('pointer-events-none');
-      cartPanel.classList.add('translate-x-full');
+      updateCartState(false);
     });
     // Close when clicking on backdrop
     cartDrawer.addEventListener('click', (e) => {
       if (e.target === cartDrawer) {
-        cartDrawer.classList.add('pointer-events-none');
-        cartPanel.classList.add('translate-x-full');
+        updateCartState(false);
       }
     });
     // Prevent closing when clicking inside panel
