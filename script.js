@@ -657,6 +657,8 @@
       if (open) {
         cartDrawer.classList.remove('pointer-events-none');
         cartPanel.classList.remove('translate-x-full');
+        renderCartItems();
+        updateCartSummary();
         requestAnimationFrame(() => {
           closeCart.focus();
         });
