@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VAL Digital Services – Licencias, Streaming y IA Premium</title>
+  <meta name="description" content="Plataforma de venta de licencias de software, suscripciones de streaming, herramientas de IA y servicios digitales de alta gama.">
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script type="module" src="https://unpkg.com/lucide@latest/dist/esm/icons.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-[#050814] text-white antialiased">
+  <!-- Announcement Bar -->
+  <div id="announcement" class="bg-indigo-600/80 px-4 py-2 text-sm flex items-center justify-center gap-2 animate-ping">
+    <span class="bg-indigo-500/30 px-2 py-0.5 rounded text-xs">NUEVO</span>
+    <span>¡Descubre nuestras nuevas licencias de IA con hasta 30% de descuento!</span>
+    <button id="closeAnnouncement" class="ml-auto text-indigo-200 hover:text-white">&times;</button>
+  </div>
+
+  <!-- Header -->
+  <header class="relative z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+        <!-- Logo -->
+        <div class="flex items-center space-x-3 py-4">
+          <svg class="h-8 w-8 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+          <span class="font-semibold text-lg bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">VAL Digital</span>
+        </div>
+
+        <!-- Search & Currency -->
+        <div class="flex items-center space-x-4 w-full sm:w-auto mt-4 sm:mt-0">
+          <div class="relative flex-1 min-w-0">
+            <label for="search" class="sr-only">Buscar productos</label>
+            <div class="flex items-center space-x-2">
+              <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M9.5 8a5.5 5.5 0 1011 0"/>
+              </svg>
+              <input type="text" id="search" placeholder="Buscar productos..." class="bg-gray-900/50 border border-gray-800 rounded-xl px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+          </div>
+
+          <!-- Currency Selector -->
+          <div class="relative">
+            <button id="currencyButton" class="flex items-center space-x-2 bg-gray-900/50 border border-gray-800 rounded-xl px-3 py-2 text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <span id="currencySymbol">USD</span>
+              <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div id="currencyMenu" class="hidden absolute right-0 mt-2 w-48 bg-gray-900/80 border border-gray-800 rounded-xl shadow-lg z-20">
+              <button class="currency-option w-full text-left px-4 py-2 hover:bg-gray-800" data-currency="USD">USD $</button>
+              <button class="currency-option w-full text-left px-4 py-2 hover:bg-gray-800" data-currency="EUR">EUR €</button>
+              <button class="currency-option w-full text-left px-4 py-2 hover:bg-gray-800" data-currency="ARS">ARS $</button>
+              <button class="currency-option w-full text-left px-4 py-2 hover:bg-gray-800" data-currency="MXN">MXN $</button>
+              <button class="currency-option w-full text-left px-4 py-2 hover:bg-gray-800" data-currency="COP">COP $</button>
+            </div>
+          </div>
+
+          <!-- Cart -->
+          <div class="relative">
+            <button id="cartButton" class="flex items-center space-x-2 bg-gray-900/50 border border-gray-800 rounded-xl px-3 py-2 text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+              <span id="cartCount" class="hidden inline-flex items-center justify-center w-5 h-5 bg-indigo-500 text-xs font-medium rounded-full">0</span>
+            </button>
+            <!-- Cart Drawer -->
+            <div id="cartDrawer" class="fixed inset-0 z-50 flex items-end bg-black/50 backdrop-blur-sm pointer-events-none">
+              <div class="pointer-events-auto w-80 bg-gray-900/80 border-l border-gray-800 p-4 space-y-4 overflow-y-auto max-h-[80vh] transform translate-x-full transition-transform duration-300 ease-out" id="cartPanel">
+                <div class="flex justify-between items-start">
+                  <h2 class="text-lg font-semibold">Tu Carrito</h2>
+                  <button id="closeCart" class="text-gray-400 hover:text-white">&times;</button>
+                </div>
+                <div id="cartItems" class="space-y-3">
+                  <!-- Items will be injected here -->
+                </div>
+                <div class="border-t border-gray-800 pt-4">
+                  <div class="flex justify-between text-sm">Subtotal: <span id="cartSubtotal">$0.00</span></div>
+                  <div class="flex justify-between text-sm">Descuento: <span id="cartDiscount">$0.00</span></div>
+                  <div class="flex justify-between text-lg font-semibold">Total: <span id="cartTotal">$0.00</span></div>
+                </div>
+                <div class="mt-4">
+                  <input type="text" id="couponInput" placeholder="Código de cupón" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                  <button id="applyCoupon" class="w-full mt-2 bg-indigo-600 text-white font-medium py-2 rounded-xl hover:bg-indigo-700 transition">Aplicar</button>
+                  <p id="couponMessage" class="mt-2 text-sm text-indigo-300"></p>
+                </div>
+                <button id="checkoutBtn" class="w-full bg-gradient-to-r from-indigo-500 to-cyan-500 text-white font-medium py-2 rounded-xl hover:from-indigo-600 hover:to-cyan-600 transition disabled:opacity-50">
+                  Checkout por WhatsApp
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative pt-20 pb-16 bg-gradient-to-b from-[#050814] to-black/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent mb-6">
+        Licencias Premium, Streaming y IA <br class="hidden sm:inline-block" />para profesionales exigentes
+      </p>
+      <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-alone">
+        Descubre el catálogo más selecto de herramientas digitales con entrega instantánea, garantía total y soporte especializado.
+      </p>
+      <a href="#catalog" class="bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-600 hover:to-cyan-600 text-white font-medium py-3 px-8 rounded-xl inline-flex items-center space-x-2 transition">
+        Ver Catálogo
+        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+    <!-- Trust Metrics -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
+      <div class="bg-gray-900/50 border border-gray-800 rounded-xl p-6 text-center">
+        <div class="text-indigo-400 mb-3">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.1 0-2 .9-2 2s1 2 2 2 2-.9 2-2-1-2-2-2zm0 2a.5.5 0 01.5-.5h6a.5.5 0 010 1h-6a.5.5 0 01-.5-.5zm0 3a.5.5 0 01.5-.5h6a.5.5 0 010 1h-6a.5.5 0 01-.5-.5z"/>
+          </svg>
+        </div>
+        <div class="text-2xl font-bold">+1,800</div>
+        <div class="text-sm text-gray-400">Clientes satisfechos</div>
+      </div>
+      <div class="bg-gray-900/50 border border-gray-800 rounded-xl p-6 text-center">
+        <div class="text-indigo-400 mb-3">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <div class="text-2xl font-bold">< 5 min</div>
+        <div class="text-sm text-gray-400">Entrega promedio</div>
+      </div>
+      <div class="bg-gray-900/50 border border-gray-800 rounded-xl p-6 text-center">
+        <div class="text-indigo-400 mb-3">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7 20h10a2 2 0 002-2V6a2 2 0 00-2-2H7a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <div class="text-2xl font-bold">100%</div>
+        <div class="text-sm text-gray-400">Garantía de satisfacción</div>
+      </div>
+      <div class="bg-gray-900/50 border border-gray-800 rounded-xl p-6 text-center">
+        <div class="text-indigo-400 mb-3">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M5 19h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v11a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <div class="text-2xl font-bold">4.9/5</div>
+        <div class="text-sm text-gray-400">Estrellas en reseñas</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catalog Section -->
+  <section id="catalog" class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-8">
+        <h2 class="text-2xl font-semibold mb-4">Catálogo Digital</h2>
+        <div class="flex flex-wrap items-center gap-4">
+          <!-- Category Pills -->
+          <div id="categoryFilters" class="flex flex-wrap gap-2">
+            <!-- Pills injected by JS -->
+          </div>
+          <!-- Sort Dropdown -->
+          <div class="relative">
+            <button id="sortButton" class="flex items-center space-x-2 bg-gray-900/50 border border-gray-800 rounded-xl px-3 py-2 text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <span>Ordenar por: Destacados</span>
+              <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div id="sortMenu" class="hidden absolute right-0 mt-2 w-48 bg-gray-900/80 border border-gray-800 rounded-xl shadow-lg z-20">
+              <button class="sort-option w-full text-left px-4 py-2 hover:bg-gray-800" data-sort="featured">Destacados</button>
+              <button class="sort-option w-full text-left px-4 py-2 hover:bg-gray-800" data-sort="price-asc">Precio Ascendente</button>
+              <button class="sort-option w-full text-left px-4 py-2 hover:bg-gray-800" data-sort="price-desc">Precio Descendente</button>
+              <button class="sort-option w-full text-left px-4 py-2 hover:bg-gray-800" data-sort="rating">Mejor Calificados</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div id="productGrid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <!-- Product cards injected by JS -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="emptyState" class="hidden text-center py-12">
+        <svg class="h-12 w-12 mx-auto mb-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+        <p class="text-lg text-gray-400">No se encontraron productos que coincidan con tu búsqueda.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="py-16 bg-gray-900/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-semibold mb-8 text-center">Lo que dicen nuestros clientes</h2>
+      <div id="testimonialSlider" class="space-y-6">
+        <!-- Testimonials injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-semibold mb-8 text-center">Preguntas Frecuentes</h2>
+      <div id="faqAccordion" class="space-y-4">
+        <!-- FAQ items injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Floating WhatsApp Button -->
+  <button id="whatsappFloat" class="fixed right-6 bottom-6 bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg z-50 flex items-center justify-center transition-transform duration-300">
+    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-3z"/>
+    </svg>
+    <span id="whatsappTooltip" class="hidden inline-block bg-gray-900 text-white px-3 py-1 rounded text-xs right-full ml-2 bottom-0 whitespace-nowrap">Chat en WhatsApp</span>
+  </button>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="fixed bottom-4 right-4 z-50 space-y-3"></div>
+
+  <!-- Quick View Modal (template) -->
+  <div id="quickViewModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-lg">
+    <div class="bg-gray-900/80 border border-gray-800 rounded-xl p-6 w-full max-w-2xl relative">
+      <button id="closeQuickView" class="absolute right-3 top-3 text-gray-400 hover:text-white">&times;</button>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="flex justify-center">
+          <img id="qvImage" class="max-w-full h-auto rounded-lg" src="" alt="">
+        </div>
+        <div class="space-y-4">
+          <h3 id="qvTitle" class="text-xl font-semibold"></h3>
+          <div id="qvRating" class="flex items-center space-x-2 text-indigo-400"></div>
+          <p id="qvDescription" class="text-gray-300"></p>
+          <div class="space-y-2">
+            <p class="font-medium">Beneficios:</p>
+            <ul id="qvBenefits" class="list-disc list-inside space-y-1 text-gray-300"></ul>
+          </div>
+          <div class="flex items-baseline space-x-4">
+            <span id="qvPrice" class="text-2xl font-bold"></span>
+            <button id="qvAddToCart" class="bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-600 hover:to-cyan-600 text-white font-medium py-2 px-4 rounded-xl transition">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js" type="module"></script>
+</body>
+</html>
