@@ -31,7 +31,7 @@
       name: "Adobe Creative Cloud",
       category: "Software",
       priceUSD: 54.99,
-      rating:  rating: 4.8,
+      rating: 4.8,
       badge: "Más Vendido",
       image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400",
       description: "Suite completa de diseño, video, fotografía y web.",
@@ -624,8 +624,8 @@
         // update button label
         const labelMap = {
           featured: 'Destacados',
-          price-asc: 'Precio Ascendente',
-          price-desc: 'Precio Descendente',
+          'price-asc': 'Precio Ascendente',
+          'price-desc': 'Precio Descendente',
           rating: 'Mejor Calificados'
         };
         sortBtn.querySelector('span').textContent = `Ordenar por: ${labelMap[s]}`;
