@@ -123,7 +123,9 @@
 
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
+      const willOpen = menu.classList.contains('hidden');
       menu.classList.toggle('hidden');
+      btn.setAttribute('aria-expanded', String(willOpen));
     });
 
     options.forEach(opt => {
@@ -137,10 +139,10 @@
       });
     });
 
-    // Click outside to close
     document.addEventListener('click', (e) => {
       if (!menu.contains(e.target) && !btn.contains(e.target)) {
         menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded','false');
       }
     });
   }
@@ -247,6 +249,7 @@
     const product = state.products.find(p => p.id === id);
     if (!product) return;
     const modal = document.getElementById('quickViewModal');
+    const backdrop = document.getElementById('quickViewBackdrop');
     document.getElementById('qvImage').src = product.image;
     document.getElementById('qvImage').alt = product.name;
     document.getElementById('qvTitle').textContent = product.name;
@@ -258,13 +261,27 @@
     document.getElementById('qvPrice').textContent = formatPrice(convertPrice(product.priceUSD));
     document.getElementById('qvAddToCart').dataset.id = product.id;
     modal.classList.remove('hidden');
-    // trap focus
-    const closeBtn = document.getElementById('closeQuickView');
-    closeBtn.focus();
+    modal.setAttribute('aria-hidden','false');
+    void backdrop.offsetWidth;
+    backdrop.classList.remove('opacity-0');
+    backdrop.classList.add('opacity-100');
+    document.body.classList.add('overlay-open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('closeQuickView').focus();
   }
 
   function closeQuickView() {
-    document.getElementById('quickViewModal').classList.add('hidden');
+    const modal = document.getElementById('quickViewModal');
+    const backdrop = document.getElementById('quickViewBackdrop');
+    if (!modal || modal.classList.contains('hidden')) return;
+    backdrop.classList.add('opacity-0');
+    backdrop.classList.remove('opacity-100');
+    modal.setAttribute('aria-hidden','true');
+    if (document.getElementById('cartDrawer').classList.contains('hidden')) {
+      document.body.classList.remove('overlay-open');
+      document.body.style.overflow = '';
+    }
+    setTimeout(() => modal.classList.add('hidden'), 240);
   }
 
   function addToCart(id) {
@@ -311,8 +328,8 @@
 
   function renderCartItems() {
     const container = document.getElementById('cartItems');
-    if (state.cart.length === 0) {
-      container.innerHTML = `<p class="text-gray-400 text-center py-4">Tu carrito está vacío.</p>`;
+    if (!Array.isArray(state.cart) || state.cart.length === 0) {
+      container.innerHTML = `<div class="text-center py-10"><div class="mx-auto w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-3">🛒</div><p class="text-sm text-gray-400">Tu carrito está vacío.</p><p class="text-xs text-gray-600 mt-1">Agregá productos y aparecerán aquí</p></div>`;
       return;
     }
     container.innerHTML = '';
@@ -320,22 +337,19 @@
       const product = state.products.find(p => p.id === item.id);
       if (!product) return;
       const price = convertPrice(product.priceUSD);
-      const total = price * item.qty;
       const el = document.createElement('div');
-      el.className = 'flex items-center space-x-3 bg-gray-800/50 p-3 rounded';
+      el.className = 'flex gap-3 p-3 rounded-2xl bg-white/[0.04] border border-white/5 hover:border-white/10 transition';
       el.innerHTML = `
-        <img src="${product.image}" alt="${product.name}" class="w-12 h-12 object-cover rounded">
-        <div class="flex-1">
-          <div class="font-medium">${product.name}</div>
-          <div class="text-sm text-gray-400">${
-            formatPrice(price)
-          } x ${item.qty}</div>
-        </div>
-        <div class="flex items-center space-x-2 text-lg">
-          <button class="qty-btn text-gray-400 hover:text-white" data-id="${item.id}" data-change="-1">−</button>
-          <span class="w-5 text-center">${item.qty}</span>
-          <button class="qty-btn text-gray-400 hover:text-white" data-id="${item.id}" data-change="+1">+</button>
-          <button class="remove-btn text-red-400 hover:text-red-200" data-id="${item.id}">×</button>
+        <img src="${product.image}" alt="${product.name}" class="w-14 h-14 object-cover rounded-xl bg-white/5 shrink-0">
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold text-sm leading-tight truncate">${product.name}</div>
+          <div class="text-xs text-gray-500">${product.category} · ${formatPrice(price)} c/u</div>
+          <div class="flex items-center gap-2 mt-2">
+            <button class="qty-btn h-7 w-7 rounded-full bg-white text-black text-sm font-bold flex items-center justify-center hover:bg-gray-100" data-id="${item.id}" data-change="-1">−</button>
+            <span class="w-6 text-center text-sm font-bold">${item.qty}</span>
+            <button class="qty-btn h-7 w-7 rounded-full bg-white text-black text-sm font-bold flex items-center justify-center hover:bg-gray-100" data-id="${item.id}" data-change="+1">+</button>
+            <button class="remove-btn ml-auto text-[11px] text-gray-500 hover:text-red-400" data-id="${item.id}">Quitar</button>
+          </div>
         </div>
       `;
       container.appendChild(el);
@@ -511,19 +525,20 @@
     sortBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       sortMenu.classList.toggle('hidden');
+      sortBtn.setAttribute('aria-expanded', String(!sortMenu.classList.contains('hidden')));
     });
     sortOptions.forEach(opt => {
       opt.addEventListener('click', () => {
         const s = opt.getAttribute('data-sort');
         state.sort = s;
-        // update button label
         const labelMap = {
-          featured: 'Destacados',
-          'price-asc': 'Precio Ascendente',
-          'price-desc': 'Precio Descendente',
-          rating: 'Mejor Calificados'
+          featured: 'Ordenar: Destacados ▾',
+          'price-asc': 'Ordenar: Precio ↑',
+          'price-desc': 'Ordenar: Precio ↓',
+          rating: 'Ordenar: Mejor ★'
         };
-        sortBtn.querySelector('span').textContent = `Ordenar por: ${labelMap[s]}`;
+        sortBtn.textContent = labelMap[s];
+        sortBtn.setAttribute('aria-expanded','false');
         sortMenu.classList.add('hidden');
         renderProductGrid();
       });
@@ -531,10 +546,11 @@
     document.addEventListener('click', (e) => {
       if (!sortMenu.contains(e.target) && !sortBtn.contains(e.target)) {
         sortMenu.classList.add('hidden');
+        sortBtn.setAttribute('aria-expanded','false');
       }
     });
 
-    // Cart drawer toggle (corregido: hidden + scroll lock + ESC)
+    // Cart drawer — modern overlay (backdrop fade + panel slide + lock)
     const cartBtn = document.getElementById('cartButton');
     const cartDrawer = document.getElementById('cartDrawer');
     const cartBackdrop = document.getElementById('cartBackdrop');
@@ -543,16 +559,23 @@
     const updateCartState = (open) => {
       if (open) {
         cartDrawer.classList.remove('hidden');
-        // force reflow for transition
+        cartDrawer.setAttribute('aria-hidden','false');
         void cartPanel.offsetWidth;
+        cartBackdrop.classList.remove('opacity-0');
+        cartBackdrop.classList.add('opacity-100');
         cartPanel.classList.remove('translate-x-full');
+        document.body.classList.add('overlay-open');
         document.body.style.overflow = 'hidden';
         renderCartItems();
         updateCartSummary();
         requestAnimationFrame(() => closeCart.focus());
       } else {
         cartPanel.classList.add('translate-x-full');
+        cartBackdrop.classList.add('opacity-0');
+        cartBackdrop.classList.remove('opacity-100');
+        document.body.classList.remove('overlay-open');
         document.body.style.overflow = '';
+        cartDrawer.setAttribute('aria-hidden','true');
         setTimeout(() => cartDrawer.classList.add('hidden'), 300);
       }
     };
@@ -578,10 +601,15 @@
     // Checkout button
     document.getElementById('checkoutBtn').addEventListener('click', checkout);
 
-    // Quick view close
+    // Quick view close — modern (backdrop + ESC handled globally)
     document.getElementById('closeQuickView').addEventListener('click', closeQuickView);
+    document.getElementById('quickViewBackdrop').addEventListener('click', closeQuickView);
     document.getElementById('quickViewModal').addEventListener('click', (e) => {
       if (e.target === e.currentTarget) closeQuickView();
+    });
+    document.getElementById('qvAddToCart').addEventListener('click', (e) => {
+      const id = Number(e.currentTarget.dataset.id);
+      if (id) { addToCart(id); closeQuickView(); }
     });
 
     // WhatsApp float button (ahora funcional)
