@@ -3,240 +3,271 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VAL Digital Services – Licencias, Streaming y IA Premium</title>
-  <meta name="description" content="Plataforma de venta de licencias de software, suscripciones de streaming, herramientas de IA y servicios digitales de alta gama.">
+  <title>VAL Digital Services — Tu mundo digital, en un solo lugar</title>
+  <meta name="description" content="Streaming, música, IA, edición, videojuegos, VPN, correos y promociones. Todo lo que necesitas, en un solo lugar.">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
+            'val-gold': '#D4A017',
+            'val-gold-light': '#FFD700',
             'val-bg': '#050814',
-            'val-indigo': '#6366f1',
-            'val-cyan': '#06b6d4',
-            'val-emerald': '#10b981'
-          }
+            'val-card': '#0f1220'
+          },
+          fontFamily: { sans: ['Inter','system-ui','sans-serif'] }
         }
       }
     }
   </script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-[#050814] text-white antialiased overflow-x-hidden">
-  <!-- Announcement Bar -->
-  <div id="announcement" class="relative z-40 bg-indigo-600/90 border-b border-indigo-500/30 px-4 py-2 text-sm flex items-center justify-center gap-2">
-    <span class="relative flex items-center gap-2">
-      <span class="relative flex h-2 w-2">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
-      </span>
-      <span class="bg-white/20 px-2 py-0.5 rounded text-xs font-medium tracking-wide">NUEVO</span>
-    </span>
-    <span class="text-white/90">¡Nuevas licencias de IA con hasta 30% OFF — entrega &lt; 5 min!</span>
-    <button id="closeAnnouncement" aria-label="Cerrar anuncio" class="ml-4 text-white/70 hover:text-white transition">&times;</button>
-  </div>
+<body class="bg-[#04060f] text-white antialiased overflow-x-hidden" style="font-family: Inter, system-ui, sans-serif;">
 
-  <!-- Header -->
-  <header id="mainHeader" class="sticky top-0 z-40 bg-[#050814]/80 backdrop-blur-xl border-b border-white/5 transition-colors">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 py-3">
-        <!-- Logo -->
-        <a href="#" class="flex items-center space-x-3 shrink-0">
-          <span class="h-9 w-9 rounded-xl bg-gradient-to-br from-indigo-600 to-cyan-400 flex items-center justify-center font-bold text-white">V</span>
-          <span class="font-semibold text-lg bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">VAL Digital</span>
-        </a>
-        <nav class="hidden md:flex items-center gap-6 text-sm">
-          <a href="#catalog" class="nav-link text-gray-300 hover:text-white transition">Catálogo</a>
-          <a href="#soporte" class="nav-link text-gray-300 hover:text-white transition">Soporte</a>
-          <a href="#contacto" class="nav-link text-gray-300 hover:text-white transition">Contacto</a>
-        </nav>
-
-        <!-- Search & Actions -->
-        <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
-          <div class="relative flex-1 sm:w-72">
-            <label for="search" class="sr-only">Buscar productos</label>
-            <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 11a6 6 0 1112 0 6 6 0 01-12 0z"/></svg>
-            <input type="text" id="search" placeholder="Buscar productos..." class="w-full bg-white/[0.06] border border-white/10 rounded-xl pl-9 pr-3 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50" />
-          </div>
-
-          <div class="relative shrink-0">
-            <button id="currencyButton" class="flex items-center gap-2 bg-white/[0.06] border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white hover:bg-white/10 transition">
-              <span id="currencySymbol" class="font-medium">USD</span>
-              <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-            </button>
-            <div id="currencyMenu" class="hidden absolute right-0 mt-2 w-48 bg-[#0f1220] border border-white/10 rounded-xl shadow-2xl z-30 overflow-hidden">
-              <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/5" data-currency="USD">USD — Dólar</button>
-              <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/5" data-currency="EUR">EUR — Euro</button>
-              <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/5" data-currency="ARS">ARS — Peso AR</button>
-              <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/5" data-currency="MXN">MXN — Peso MX</button>
-              <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/5" data-currency="COP">COP — Peso CO</button>
-            </div>
-          </div>
-
-          <button id="cartButton" aria-label="Abrir carrito" class="relative flex items-center justify-center bg-white/[0.06] border border-white/10 rounded-xl h-[44px] w-[44px] text-white hover:bg-white/10 transition shrink-0">
-            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-            <span id="cartCount" class="hidden absolute -top-2 -right-2 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 bg-indigo-500 text-xs font-bold rounded-full ring-2 ring-[#050814]">0</span>
-          </button>
+  <!-- Top Nav -->
+  <header id="mainHeader" class="sticky top-0 z-40 bg-[#050814]/90 backdrop-blur-xl border-b border-white/[0.06]">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-[56px]">
+        <div class="flex items-center gap-8">
+          <a href="#" class="flex items-center gap-3">
+            <img src="assets/logo.png" alt="VAL" class="h-8 w-8 object-contain rounded-lg">
+            <span class="hidden sm:block font-extrabold tracking-[0.14em] text-xs">VAL DIGITAL SERVICES</span>
+          </a>
+          <nav class="hidden md:flex items-center gap-6 text-[13px] font-medium">
+            <a href="#" class="nav-link text-white">Inicio</a>
+            <a href="#catalog" class="nav-link text-gray-400 hover:text-white transition">Tienda</a>
+            <a href="#categorias" class="nav-link text-gray-400 hover:text-white transition">Categorías</a>
+            <a href="#soporte" class="nav-link text-gray-400 hover:text-white transition">Soporte</a>
+          </nav>
         </div>
+        <div class="flex items-center gap-2">
+          <div class="relative hidden sm:block">
+            <input id="search" type="text" placeholder="Buscar..." class="w-44 lg:w-64 bg-white/[0.07] border border-white/10 rounded-full pl-9 pr-3 py-2 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D4A017]/30">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">⌕</span>
+          </div>
+          <button id="currencyButton" class="hidden sm:flex items-center gap-1.5 bg-white/[0.07] border border-white/10 rounded-full px-3 py-2 text-xs font-medium hover:bg-white/10 transition">
+            <span>🌐</span> <span id="currencySymbol">ES</span>
+          </button>
+          <div id="currencyMenu" class="hidden absolute right-4 top-[56px] w-48 bg-[#0f1220] border border-white/10 rounded-xl shadow-2xl z-30 overflow-hidden">
+            <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/5" data-currency="USD">USD — Dólar</button>
+            <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/5" data-currency="EUR">EUR — Euro</button>
+            <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/5" data-currency="ARS">ARS — Peso AR</button>
+            <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/5" data-currency="MXN">MXN — Peso MX</button>
+            <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/5" data-currency="COP">COP — Peso CO</button>
+          </div>
+          <button id="cartButton" aria-label="Carrito" class="flex items-center gap-2 bg-white text-black rounded-full px-4 py-2 text-sm font-semibold hover:bg-gray-100 transition">
+            🛒 <span class="hidden sm:inline">Carrito</span> <span id="cartCount" class="bg-black text-white text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">0</span>
+          </button>
+          <button class="md:hidden p-2 text-gray-400" onclick="document.getElementById('mobileNav').classList.toggle('hidden')">☰</button>
+        </div>
+      </div>
+      <div id="mobileNav" class="hidden md:hidden pb-3 flex flex-col gap-2 text-sm">
+        <a href="#" class="text-white">Inicio</a><a href="#catalog" class="text-gray-400">Tienda</a><a href="#categorias" class="text-gray-400">Categorías</a><a href="#soporte" class="text-gray-400">Soporte</a>
       </div>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="relative pt-16 pb-12 overflow-hidden">
-    <div class="absolute inset-0 -z-10">
-      <div class="absolute inset-0 bg-gradient-to-b from-indigo-500/[0.08] via-transparent to-transparent"></div>
-      <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-indigo-600/20 blur-[120px] rounded-full pointer-events-none"></div>
-      <div class="absolute top-20 right-0 w-[500px] h-[500px] bg-cyan-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+  <!-- HERO — replica imagen dorada -->
+  <section class="relative overflow-hidden bg-[#04060f] border-b border-white/[0.04]">
+    <!-- streaming tiles background left -->
+    <div class="absolute inset-0 opacity-[0.08] pointer-events-none">
+      <div class="absolute left-0 top-0 w-[42%] h-full grid grid-cols-3 gap-2 p-6 rotate-[-2deg]">
+        <div class="bg-[#E50914] rounded-lg flex items-center justify-center text-[10px] font-bold">NETFLIX</div>
+        <div class="bg-[#1DB954] rounded-lg flex items-center justify-center text-xs">Spotify</div>
+        <div class="bg-[#113CCF] rounded-lg flex items-center justify-center text-xs">Disney+</div>
+        <div class="bg-white text-black rounded-lg flex items-center justify-center text-[10px] font-bold">YouTube Premium</div>
+        <div class="bg-[#FF6500] rounded-lg flex items-center justify-center text-xs">crunchyroll</div>
+        <div class="bg-gray-800 rounded-lg flex items-center justify-center text-xs">deezer</div>
+        <div class="bg-[#00A8E1] rounded-lg flex items-center justify-center text-[10px]">prime video</div>
+        <div class="bg-black border border-white/20 rounded-lg flex items-center justify-center text-[10px]">TFLIX</div>
+        <div class="bg-[#000] rounded-lg"></div>
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-r from-[#04060f] via-[#04060f]/80 to-[#04060f]"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#04060f] to-transparent"></div>
     </div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-5">
-        <span class="bg-gradient-to-r from-indigo-300 via-indigo-400 to-cyan-400 bg-clip-text text-transparent">Licencias Premium, Streaming y IA</span><br>
-        <span class="text-white">para profesionales exigentes</span>
-      </h1>
-      <p class="text-lg sm:text-xl text-gray-300/90 mb-8 max-w-2xl mx-auto leading-relaxed">
-        Descubre el catálogo más selecto de herramientas digitales con entrega instantánea, garantía total y soporte especializado.
-      </p>
-      <a href="#catalog" class="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-semibold py-3.5 px-8 rounded-xl shadow-lg shadow-indigo-500/20 transition">
-        Ver Catálogo
-        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-      </a>
-    </div>
-    <!-- Trust Metrics -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 lg:grid-cols-4 gap-4 mt-14">
-      <div class="bg-white/[0.04] backdrop-blur-xl border border-white/10 rounded-2xl p-6 text-center">
-        <div class="text-2xl font-bold text-white">+1,800</div>
-        <div class="text-sm text-gray-400 mt-1">Clientes satisfechos</div>
-      </div>
-      <div class="bg-white/[0.04] backdrop-blur-xl border border-white/10 rounded-2xl p-6 text-center">
-        <div class="text-2xl font-bold text-white">&lt; 5 min</div>
-        <div class="text-sm text-gray-400 mt-1">Entrega promedio</div>
-      </div>
-      <div class="bg-white/[0.04] backdrop-blur-xl border border-white/10 rounded-2xl p-6 text-center">
-        <div class="text-2xl font-bold text-white">100%</div>
-        <div class="text-sm text-gray-400 mt-1">Garantía de satisfacción</div>
-      </div>
-      <div class="bg-white/[0.04] backdrop-blur-xl border border-white/10 rounded-2xl p-6 text-center">
-        <div class="text-2xl font-bold text-white">4.9/5</div>
-        <div class="text-sm text-gray-400 mt-1">Estrellas en reseñas</div>
-      </div>
-    </div>
-  </section>
+    <!-- glows -->
+    <div class="absolute -top-20 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#D4A017]/[0.06] blur-[80px] rounded-full pointer-events-none"></div>
+    <div class="absolute top-10 right-[20%] w-[500px] h-[500px] bg-indigo-600/[0.07] blur-[100px] rounded-full pointer-events-none"></div>
 
-  <!-- Catalog Section -->
-  <section id="catalog" class="py-14">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="mb-8">
-        <h2 class="text-2xl font-bold mb-4">Catálogo Digital</h2>
-        <div class="flex flex-wrap items-center gap-3">
-          <div id="categoryFilters" class="flex flex-wrap gap-2"></div>
-          <div class="relative ml-auto">
-            <button id="sortButton" class="flex items-center gap-2 bg-white/[0.06] border border-white/10 rounded-xl px-3 py-2 text-sm text-white hover:bg-white/10">
-              <span>Ordenar por: Destacados</span>
-              <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-            </button>
-            <div id="sortMenu" class="hidden absolute right-0 mt-2 w-56 bg-[#0f1220] border border-white/10 rounded-xl shadow-2xl z-20 overflow-hidden">
-              <button class="sort-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/5" data-sort="featured">Destacados</button>
-              <button class="sort-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/5" data-sort="price-asc">Precio Ascendente</button>
-              <button class="sort-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/5" data-sort="price-desc">Precio Descendente</button>
-              <button class="sort-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/5" data-sort="rating">Mejor Calificados</button>
+    <div class="relative max-w-[1280px] mx-auto px-4 sm:px-6 py-10 lg:py-14">
+      <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-center">
+        <!-- left copy -->
+        <div>
+          <div class="inline-flex items-center gap-2 text-[11px] tracking-[0.2em] font-semibold text-[#D4A017] mb-3">
+            <span class="text-[#D4A017]">✦</span> VAL DIGITAL SERVICES
+          </div>
+          <h1 class="text-[32px] sm:text-[42px] lg:text-[48px] font-black leading-[0.95] tracking-tight">
+            <span class="text-white">Tu mundo digital,</span><br>
+            <span class="text-white">en un</span> <span class="bg-gradient-to-r from-[#8B5CF6] to-[#06B6D4] bg-clip-text text-transparent">solo lugar.</span>
+          </h1>
+          <p class="text-sm sm:text-[15px] text-gray-400 leading-relaxed mt-4 max-w-[520px]">
+            Streaming, música, IA, edición, videojuegos, VPN, correos y promociones. Todo lo que necesitas, en un solo lugar.
+          </p>
+          <div class="flex flex-wrap gap-3 mt-6">
+            <a href="#catalog" class="bg-gradient-to-r from-[#7C5CFF] to-[#3B82F6] hover:from-[#6D4AFF] hover:to-[#2F6BFF] text-white font-semibold px-6 py-3 rounded-xl text-sm shadow-lg shadow-indigo-600/20 transition">Comprar ahora</a>
+            <a href="#categorias" class="bg-white/[0.07] border border-white/10 hover:bg-white/10 text-white font-medium px-6 py-3 rounded-xl text-sm transition">Explorar categorías</a>
+          </div>
+        </div>
+        <!-- right visuals -->
+        <div class="relative hidden lg:block h-[380px]">
+          <!-- VAL gold logo center -->
+          <div class="absolute left-1/2 top-[22%] -translate-x-1/2 text-center">
+            <img src="assets/logo.png" alt="VAL" class="h-28 w-auto mx-auto object-contain drop-shadow-[0_0_30px_rgba(212,160,23,0.3)]">
+            <div class="text-[11px] tracking-[0.35em] text-white/60 mt-2 font-semibold">DIGITAL SERVICES</div>
+          </div>
+          <!-- AI brain + laptop + controller -->
+          <div class="absolute right-6 top-2 w-28 h-28 opacity-90">
+            <div class="w-full h-full rounded-full border border-violet-500/30 bg-gradient-to-br from-violet-600/20 to-transparent flex items-center justify-center">
+              <span class="bg-[#7C5CFF] text-white text-xs font-black px-2 py-1 rounded">AI</span>
             </div>
+          </div>
+          <div class="absolute right-0 bottom-10 w-[320px] h-[190px] bg-gradient-to-br from-gray-900 to-black border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+            <div class="h-6 bg-white/5 border-b border-white/5 flex items-center gap-1 px-3"><span class="h-2 w-2 rounded-full bg-red-500"></span><span class="h-2 w-2 rounded-full bg-yellow-500"></span><span class="h-2 w-2 rounded-full bg-green-500"></span></div>
+            <div class="p-3 grid grid-cols-3 gap-2 h-[calc(100%-24px)]">
+              <div class="bg-violet-600/20 rounded-lg"></div><div class="bg-cyan-500/20 rounded-lg"></div><div class="bg-pink-500/20 rounded-lg"></div>
+            </div>
+          </div>
+          <div class="absolute left-10 bottom-6 w-32 h-20 bg-gradient-to-br from-gray-800 to-black border border-white/10 rounded-2xl flex items-center justify-center">
+            <span class="text-3xl">🎮</span>
+          </div>
+          <div class="absolute right-20 bottom-2 flex gap-3">
+            <div class="h-8 w-10 bg-gradient-to-br from-[#D4A017] to-[#FFD700] rounded-lg flex items-center justify-center text-black text-xs">✉</div>
+            <div class="h-8 w-10 bg-violet-600/30 border border-violet-500/30 rounded-lg flex items-center justify-center text-xs">☁↑</div>
           </div>
         </div>
       </div>
-      <div id="productGrid" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>
-      <div id="emptyState" class="hidden text-center py-16">
-        <div class="mx-auto w-14 h-14 rounded-full bg-white/5 flex items-center justify-center mb-4">🔍</div>
-        <p class="text-gray-300 font-medium">No se encontraron productos</p>
-        <p class="text-sm text-gray-500 mt-1">Probá con otro término o categoría</p>
+
+      <!-- 4 badges bottom -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-0 mt-10 border-t border-[#D4A017]/20 pt-6">
+        <div class="flex gap-3 px-2 lg:px-4 border-r border-[#D4A017]/15 last:border-0">
+          <span class="text-[#D4A017] text-xl">◆</span>
+          <div><div class="text-xs font-bold tracking-widest text-[#D4A017]">PREMIUM</div><div class="text-xs text-gray-500 leading-tight mt-1">Streaming, música,<br>edición, IA y mucho más</div></div>
+        </div>
+        <div class="flex gap-3 px-2 lg:px-4 border-r border-[#D4A017]/15 last:border-0">
+          <span class="text-[#D4A017] text-xl">🛡</span>
+          <div><div class="text-xs font-bold tracking-widest text-[#D4A017]">CONFIANZA</div><div class="text-xs text-gray-500 leading-tight mt-1">Productos 100% seguros<br>y garantizados</div></div>
+        </div>
+        <div class="flex gap-3 px-2 lg:px-4 border-r border-[#D4A017]/15 last:border-0">
+          <span class="text-[#D4A017] text-xl">⚡</span>
+          <div><div class="text-xs font-bold tracking-widest text-[#D4A017]">ENTREGA RÁPIDA</div><div class="text-xs text-gray-500 leading-tight mt-1">Recibe al instante<br>en tu correo</div></div>
+        </div>
+        <div class="flex gap-3 px-2 lg:px-4">
+          <span class="text-[#D4A017] text-xl">🎧</span>
+          <div><div class="text-xs font-bold tracking-widest text-[#D4A017]">SOPORTE 24/7</div><div class="text-xs text-gray-500 leading-tight mt-1">Atención personalizada<br>cuando lo necesites</div></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Testimonials -->
-  <section class="py-14 bg-white/[0.02] border-y border-white/5">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-2xl font-bold mb-8 text-center">Lo que dicen nuestros clientes</h2>
-      <div id="testimonialSlider" class="grid md:grid-cols-3 gap-5"></div>
+  <!-- SERVICIOS DIGITALES strip -->
+  <section class="bg-[#0a0d1a] border-y border-white/[0.06] py-4">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-4">
+        <img src="assets/logo.png" alt="VAL" class="h-10 w-10 object-contain">
+        <div>
+          <div class="text-xs tracking-[0.18em] font-bold text-white">VAL DIGITAL SERVICES</div>
+          <div class="text-[10px] tracking-[0.25em] text-gray-500">SERVICIOS DIGITALES</div>
+        </div>
+        <div class="hidden sm:flex items-center gap-2 ml-6 text-xs">
+          <span class="text-[#D4A017]">⚡</span>
+          <span class="text-gray-300">Entrega rápida · Atención personalizada</span>
+          <span class="text-gray-600">Compra tus productos digitales de forma fácil y segura.</span>
+        </div>
+      </div>
+      <a href="https://wa.me/5491123456789" target="_blank" class="bg-[#25D366] hover:bg-[#1ebe5a] text-white text-sm font-semibold px-5 py-2.5 rounded-full flex items-center gap-2 transition">💬 Consultar por WhatsApp</a>
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section class="py-14">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-2xl font-bold mb-8 text-center">Preguntas Frecuentes</h2>
-      <div id="faqAccordion" class="rounded-2xl border border-white/10 overflow-hidden divide-y divide-white/5"></div>
+  <!-- EXPLORA Categorías -->
+  <section id="categorias" class="py-8 bg-[#070a14]">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6">
+      <div class="flex items-center gap-3 mb-4">
+        <h2 class="text-sm font-bold tracking-widest text-white">EXPLORA</h2>
+        <span class="text-sm text-gray-500">Categorías</span>
+      </div>
+      <div id="categoryFilters" class="flex flex-wrap gap-2"></div>
+    </div>
+  </section>
+
+  <!-- DESTACADOS Productos -->
+  <section id="catalog" class="py-6 bg-[#070a14]">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-sm font-bold tracking-widest">DESTACADOS</h2>
+        <span class="text-xs text-gray-500">Productos</span>
+        <div class="ml-auto relative">
+          <button id="sortButton" class="flex items-center gap-2 bg-white/[0.06] border border-white/10 rounded-full px-3 py-1.5 text-xs text-white">Ordenar: Destacados ▾</button>
+          <div id="sortMenu" class="hidden absolute right-0 mt-2 w-48 bg-[#0f1220] border border-white/10 rounded-xl shadow-xl z-20 overflow-hidden">
+            <button class="sort-option w-full text-left px-4 py-2 text-xs hover:bg-white/5" data-sort="featured">Destacados</button>
+            <button class="sort-option w-full text-left px-4 py-2 text-xs hover:bg-white/5" data-sort="price-asc">Precio ↑</button>
+            <button class="sort-option w-full text-left px-4 py-2 text-xs hover:bg-white/5" data-sort="price-desc">Precio ↓</button>
+            <button class="sort-option w-full text-left px-4 py-2 text-xs hover:bg-white/5" data-sort="rating">Mejor calificados</button>
+          </div>
+        </div>
+      </div>
+      <div id="productGrid" class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>
+      <div id="emptyState" class="hidden text-center py-16">
+        <div class="mx-auto w-14 h-14 rounded-full bg-white/5 flex items-center justify-center mb-3">🔍</div>
+        <p class="text-sm text-gray-400">No se encontraron productos</p>
+      </div>
     </div>
   </section>
 
   <!-- Soporte -->
-  <section id="soporte" class="py-14 bg-white/[0.02] border-y border-white/5">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section id="soporte" class="py-12 bg-[#050814] border-y border-white/5">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6">
       <div class="max-w-3xl mx-auto text-center mb-8">
-        <h2 class="text-2xl font-bold">Centro de Soporte</h2>
-        <p class="text-sm text-gray-400 mt-2">Respuesta promedio &lt; 2h · Lun-Dom 9–21 AR · urgencias 24/7 por WhatsApp</p>
-        <div class="mt-4">
-          <input id="soporteSearch" placeholder="Buscar en ayuda (ej: garantía, entrega)..." class="w-full bg-white/[0.06] border border-white/10 rounded-xl px-4 py-3 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
-        </div>
+        <h2 class="text-xl font-bold">Centro de Soporte</h2>
+        <p class="text-xs text-gray-500 mt-2">Respuesta promedio &lt; 2h · Lun-Dom 9–21 AR · urgencias 24/7</p>
+        <input id="soporteSearch" placeholder="Buscar en ayuda..." class="mt-4 w-full bg-white/[0.06] border border-white/10 rounded-full px-4 py-3 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D4A017]/30">
       </div>
       <div class="grid md:grid-cols-3 gap-4 mb-8">
-        <a href="https://wa.me/5491123456789" target="_blank" class="glass rounded-2xl p-5 hover:bg-white/[0.06] transition">
-          <div class="h-10 w-10 rounded-xl bg-[#25D366]/20 flex items-center justify-center text-[#25D366] mb-3">◉</div>
-          <h3 class="font-semibold">WhatsApp</h3><p class="text-sm text-gray-400 mt-1">+54 9 11 2345-6789<br><span class="text-xs">Respuesta inmediata</span></p>
+        <a href="https://wa.me/5491123456789" target="_blank" class="glass rounded-2xl p-5 hover:bg-white/[0.05] transition">
+          <div class="h-10 w-10 rounded-xl bg-[#25D366]/15 flex items-center justify-center mb-3">💬</div>
+          <h3 class="font-semibold text-sm">WhatsApp</h3><p class="text-xs text-gray-500 mt-1">+54 9 11 2345-6789<br>Respuesta inmediata</p>
         </a>
-        <a href="mailto:soporte@valdigital.com" class="glass rounded-2xl p-5 hover:bg-white/[0.06] transition">
-          <div class="h-10 w-10 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-300 mb-3">✉</div>
-          <h3 class="font-semibold">Email</h3><p class="text-sm text-gray-400 mt-1">soporte@valdigital.com<br><span class="text-xs">&lt; 2h en horario</span></p>
+        <a href="mailto:soporte@valdigital.com" class="glass rounded-2xl p-5 hover:bg-white/[0.05] transition">
+          <div class="h-10 w-10 rounded-xl bg-indigo-500/15 flex items-center justify-center mb-3">✉</div>
+          <h3 class="font-semibold text-sm">Email</h3><p class="text-xs text-gray-500 mt-1">soporte@valdigital.com<br>&lt; 2h en horario</p>
         </a>
         <div class="glass rounded-2xl p-5">
-          <div class="h-10 w-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-300 mb-3">◷</div>
-          <h3 class="font-semibold">Horarios</h3><p class="text-sm text-gray-400 mt-1">Lun-Dom 9:00–21:00 AR<br><span class="text-xs">Urgencias 24/7</span></p>
+          <div class="h-10 w-10 rounded-xl bg-[#D4A017]/15 flex items-center justify-center mb-3">◷</div>
+          <h3 class="font-semibold text-sm">Horarios</h3><p class="text-xs text-gray-500 mt-1">Lun-Dom 9:00–21:00 AR<br>Urgencias 24/7</p>
         </div>
       </div>
-      <div class="glass rounded-2xl p-6">
-        <h3 class="font-semibold mb-3">Tutoriales rápidos</h3>
-        <ul class="text-sm text-gray-300 space-y-2 list-disc list-inside">
-          <li>Cómo activar tu licencia paso a paso (video 60s)</li>
-          <li>Canjear código Netflix / Spotify / Microsoft 365</li>
-          <li>Instalar y configurar NordVPN / Malwarebytes</li>
-        </ul>
-      </div>
+      <div id="faqAccordion" class="max-w-3xl mx-auto rounded-2xl border border-white/10 overflow-hidden divide-y divide-white/5"></div>
     </div>
   </section>
 
   <!-- Contacto -->
-  <section id="contacto" class="py-14">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8">
+  <section id="contacto" class="py-12 bg-[#070a14]">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-8">
       <div>
-        <h2 class="text-2xl font-bold">Contacto</h2>
-        <p class="text-sm text-gray-400 mt-2">¿No encontraste respuesta? Escribinos — generamos ticket <span class="font-mono text-indigo-300">#SOP-XXXXXX</span></p>
+        <h2 class="text-xl font-bold">Contacto</h2>
+        <p class="text-xs text-gray-500 mt-2">¿No encontraste respuesta? Te generamos ticket <span class="font-mono text-[#D4A017]">#SOP-XXXXXX</span></p>
         <form id="contactForm" class="mt-6 space-y-3">
           <div class="grid sm:grid-cols-2 gap-3">
-            <input name="nombre" required placeholder="Nombre *" class="bg-white/[0.06] border border-white/10 rounded-xl px-3 py-3 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
-            <input name="email" type="email" required placeholder="Email *" class="bg-white/[0.06] border border-white/10 rounded-xl px-3 py-3 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+            <input name="nombre" required placeholder="Nombre *" class="bg-white/[0.06] border border-white/10 rounded-xl px-3 py-3 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D4A017]/30">
+            <input name="email" type="email" required placeholder="Email *" class="bg-white/[0.06] border border-white/10 rounded-xl px-3 py-3 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D4A017]/30">
           </div>
-          <input name="telefono" placeholder="Teléfono (opcional)" class="w-full bg-white/[0.06] border border-white/10 rounded-xl px-3 py-3 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
-          <select name="asunto" class="w-full bg-[#0f1220] border border-white/10 rounded-xl px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+          <input name="telefono" placeholder="Teléfono (opcional)" class="w-full bg-white/[0.06] border border-white/10 rounded-xl px-3 py-3 text-sm placeholder-gray-500">
+          <select name="asunto" class="w-full bg-[#0f1220] border border-white/10 rounded-xl px-3 py-3 text-sm">
             <option>Soporte técnico</option><option>Consulta pre-venta</option><option>Problema con pedido</option><option>Otro</option>
           </select>
-          <textarea name="mensaje" required rows="4" placeholder="Mensaje *" class="w-full bg-white/[0.06] border border-white/10 rounded-xl px-3 py-3 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"></textarea>
-          <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-semibold py-3 rounded-xl transition">Enviar mensaje</button>
-          <p class="text-[11px] text-gray-500 text-center">Al enviar aceptás nuestra política de privacidad · Respuesta &lt; 2h</p>
+          <textarea name="mensaje" required rows="4" placeholder="Mensaje *" class="w-full bg-white/[0.06] border border-white/10 rounded-xl px-3 py-3 text-sm placeholder-gray-500"></textarea>
+          <button type="submit" class="w-full bg-gradient-to-r from-[#D4A017] to-[#B8860B] hover:from-[#E5B62E] text-black font-bold py-3 rounded-xl transition">Enviar mensaje</button>
         </form>
       </div>
       <div class="space-y-4">
         <div class="glass rounded-2xl p-6">
-          <h3 class="font-semibold">VAL Digital Services</h3>
-          <p class="text-sm text-gray-400 mt-2">Soporte remoto para licencias, streaming e IA. Entrega digital inmediata.</p>
-          <div class="mt-4 space-y-2 text-sm">
-            <div>📍 Buenos Aires, Argentina (atención remota nacional)</div>
-            <div>📧 <a href="mailto:soporte@valdigital.com" class="text-indigo-300 hover:underline">soporte@valdigital.com</a></div>
-            <div>💬 <a href="https://wa.me/5491123456789" target="_blank" class="text-emerald-300 hover:underline">WhatsApp +54 9 11 2345-6789</a></div>
-          </div>
-          <div class="mt-4 flex gap-2 text-xs">
-            <a href="#catalog" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10">Ver catálogo</a>
-            <a href="#soporte" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10">Ir a soporte</a>
+          <h3 class="font-bold">VAL Digital Services</h3>
+          <p class="text-xs text-gray-500 mt-2">Tu tienda de servicios digitales.</p>
+          <div class="mt-4 space-y-2 text-sm text-gray-300">
+            <div>📧 soporte@valdigital.com</div>
+            <div>💬 WhatsApp +54 9 11 2345-6789</div>
           </div>
         </div>
         <iframe title="Mapa" src="https://maps.google.com/maps?q=Buenos%20Aires&t=&z=11&ie=UTF8&iwloc=&output=embed" class="w-full h-64 rounded-2xl border border-white/10"></iframe>
@@ -244,89 +275,62 @@
     </div>
   </section>
 
-  <footer class="border-t border-white/5 py-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-4 gap-8 text-sm">
-      <div><div class="font-bold text-white">VAL Digital</div><p class="text-gray-500 mt-2">Licencias premium, streaming e IA para profesionales exigentes. Entrega &lt; 5 min.</p></div>
-      <div><div class="font-semibold text-white">Catálogo</div><ul class="mt-2 space-y-1 text-gray-400"><li><a href="#catalog" class="hover:text-white">Software</a></li><li><a href="#catalog" class="hover:text-white">Streaming</a></li><li><a href="#catalog" class="hover:text-white">IA & Seguridad</a></li></ul></div>
-      <div><div class="font-semibold text-white">Soporte</div><ul class="mt-2 space-y-1 text-gray-400"><li><a href="#soporte" class="hover:text-white">Centro de ayuda</a></li><li><a href="#contacto" class="hover:text-white">Contacto</a></li><li><a href="#" class="hover:text-white">Garantía</a></li></ul></div>
-      <div><div class="font-semibold text-white">Legal</div><p class="text-gray-500 mt-2">© 2026 VAL Digital Services<br>Pagos seguros · Datos protegidos</p></div>
+  <footer class="border-t border-white/5 py-8 bg-[#050814]">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
+      <div class="flex items-center gap-6">
+        <a href="#" class="text-gray-400 hover:text-white">Inicio</a><a href="#catalog" class="text-gray-400 hover:text-white">Tienda</a><a href="#soporte" class="text-gray-400 hover:text-white">Soporte</a>
+      </div>
+      <div class="text-gray-600">© 2026 VAL Digital Services. Todos los derechos reservados.</div>
     </div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-8 border-t border-white/5 text-center text-xs text-gray-600">Hecho con ♥ en Argentina — <a href="https://valshop.wasmer.app" class="hover:text-gray-400">valshop.wasmer.app</a></div>
   </footer>
 
-  <!-- Cart Drawer (FUERA del header para evitar clipping) -->
+  <!-- Cart Drawer -->
   <div id="cartDrawer" class="fixed inset-0 z-[60] hidden">
     <div id="cartBackdrop" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
     <div id="cartPanel" class="absolute right-0 top-0 h-full w-[92%] sm:w-[380px] bg-[#0b0e1e] border-l border-white/10 shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]">
       <div class="flex items-center justify-between p-5 border-b border-white/5">
-        <h2 class="text-base font-semibold">Tu Carrito</h2>
-        <button id="closeCart" aria-label="Cerrar carrito" class="h-8 w-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-300">&times;</button>
+        <h2 class="font-bold text-sm tracking-wide">TU COMPRA — Carrito</h2>
+        <button id="closeCart" aria-label="Cerrar" class="h-8 w-8 rounded-full bg-white text-black flex items-center justify-center font-bold">✕</button>
       </div>
       <div id="cartItems" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
-      <div class="border-t border-white/5 p-4 space-y-4 bg-white/[0.02]">
-        <div class="space-y-1 text-sm">
-          <div class="flex justify-between text-gray-400">Subtotal: <span id="cartSubtotal" class="text-white font-medium">$0.00</span></div>
-          <div class="flex justify-between text-gray-400">Descuento: <span id="cartDiscount" class="text-emerald-400 font-medium">$0.00</span></div>
-          <div class="flex justify-between text-base font-bold pt-2 border-t border-white/5">Total: <span id="cartTotal">$0.00</span></div>
-        </div>
-        <div>
-          <input type="text" id="couponInput" placeholder="Código de cupón (VAL10, PROMO20)" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40" />
-          <button id="applyCoupon" class="w-full mt-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 rounded-xl transition text-sm">Aplicar cupón</button>
-          <p id="couponMessage" class="mt-2 text-xs hidden"></p>
-        </div>
-        <!-- Método de pago -->
-        <fieldset class="space-y-2">
-          <legend class="text-xs font-semibold tracking-widest text-gray-400 uppercase">Método de pago</legend>
-          <label class="payment-option flex items-center gap-3 p-3 rounded-xl cursor-pointer">
-            <input type="radio" name="paymentMethod" value="transferencia" checked class="accent-indigo-500">
-            <span class="text-sm flex-1">Transferencia / Depósito <span class="text-gray-500">— CBU/Alias</span></span><span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-1 rounded">Recomendado</span>
-          </label>
-          <label class="payment-option flex items-center gap-3 p-3 rounded-xl cursor-pointer">
-            <input type="radio" name="paymentMethod" value="mercadopago" class="accent-indigo-500">
-            <span class="text-sm flex-1">Mercado Pago</span><span class="text-xs text-gray-400">Tarjeta, débito, efectivo</span>
-          </label>
-          <label class="payment-option flex items-center gap-3 p-3 rounded-xl cursor-pointer">
-            <input type="radio" name="paymentMethod" value="paypal" class="accent-indigo-500">
-            <span class="text-sm flex-1">PayPal</span><span class="text-xs text-gray-400">USD / EUR</span>
-          </label>
-          <label class="payment-option flex items-center gap-3 p-3 rounded-xl cursor-pointer">
-            <input type="radio" name="paymentMethod" value="stripe" class="accent-indigo-500">
-            <span class="text-sm flex-1">Tarjeta — Stripe</span><span class="text-xs text-gray-400">Visa · Master · Amex</span>
-          </label>
-          <p class="text-[11px] text-gray-500">Si elegís Mercado Pago / PayPal / Stripe, generamos preferencia y te redirigimos. Por ahora el checkout finaliza por WhatsApp con el método elegido.</p>
+      <div class="border-t border-white/5 p-4 space-y-3 bg-white/[0.02]">
+        <div class="flex justify-between text-sm font-bold">Total: <span id="cartTotal">$0</span></div>
+        <div class="flex justify-between text-xs text-gray-500"><span>Subtotal</span><span id="cartSubtotal">$0.00</span></div>
+        <div class="flex justify-between text-xs text-gray-500"><span>Descuento</span><span id="cartDiscount">$0.00</span></div>
+        <fieldset class="space-y-2 pt-2">
+          <legend class="text-[10px] font-bold tracking-widest text-gray-500 uppercase">Método de pago</legend>
+          <label class="payment-option flex items-center gap-2 p-2.5 rounded-xl cursor-pointer text-xs"><input type="radio" name="paymentMethod" value="transferencia" checked class="accent-[#D4A017]"> Transferencia</label>
+          <label class="payment-option flex items-center gap-2 p-2.5 rounded-xl cursor-pointer text-xs"><input type="radio" name="paymentMethod" value="mercadopago" class="accent-[#D4A017]"> Mercado Pago</label>
+          <label class="payment-option flex items-center gap-2 p-2.5 rounded-xl cursor-pointer text-xs"><input type="radio" name="paymentMethod" value="paypal" class="accent-[#D4A017]"> PayPal</label>
+          <label class="payment-option flex items-center gap-2 p-2.5 rounded-xl cursor-pointer text-xs"><input type="radio" name="paymentMethod" value="stripe" class="accent-[#D4A017]"> Stripe</label>
         </fieldset>
-        <button id="checkoutBtn" class="w-full bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-semibold py-3 rounded-xl transition disabled:opacity-40 disabled:cursor-not-allowed">
-          Checkout por WhatsApp
-        </button>
-        <p class="text-[11px] text-center text-gray-500">Pedido seguro — ID único y detalle enviados a WhatsApp</p>
+        <input id="couponInput" placeholder="Código de cupón (VAL10, PROMO20)" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-xs placeholder-gray-500">
+        <button id="applyCoupon" class="w-full bg-white text-black font-bold py-2.5 rounded-xl text-sm">Aplicar</button>
+        <p id="couponMessage" class="text-xs hidden"></p>
+        <button id="checkoutBtn" class="w-full bg-white text-black font-bold py-3 rounded-xl disabled:opacity-40">Continuar compra</button>
+        <div class="bg-white/[0.04] rounded-xl p-3 text-center">
+          <div class="text-xs font-bold">¿NECESITAS AYUDA?</div><div class="text-[11px] text-gray-500 mt-1">Estamos para ayudarte. Consulta disponibilidad.</div>
+          <a href="https://wa.me/5491123456789" target="_blank" class="mt-2 inline-flex items-center gap-2 bg-[#25D366] text-white text-xs font-bold px-4 py-2 rounded-full">💬 WhatsApp</a>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Floating WhatsApp -->
-  <button id="whatsappFloat" class="fixed right-5 bottom-5 bg-[#25D366] hover:bg-[#1ebe5a] text-white h-14 w-14 rounded-full shadow-lg shadow-black/20 z-40 flex items-center justify-center">
-    <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19.05 4.94A9.91 9.91 0 0012.03 2C6.52 2 2.06 6.45 2.06 11.95c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.92 9.92 0 004.78 1.22h.01c5.51 0 10-4.45 10-9.95 0-2.66-1.04-5.15-2.91-7.02l-.08-.09zM12.03 19.87h-.01a8.18 8.18 0 01-4.17-1.14l-.3-.18-3.11.82.83-3.04-.2-.32a8.24 8.24 0 01-1.26-4.36c0-4.54 3.7-8.25 8.25-8.25 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 012.42 5.83c0 4.55-3.7 8.25-8.25 8.25z"/></svg>
+  <button id="whatsappFloat" class="fixed right-5 bottom-5 bg-[#25D366] hover:bg-[#1ebe5a] text-white h-14 w-14 rounded-full shadow-lg z-40 flex items-center justify-center text-xl">💬
     <span id="whatsappTooltip" class="hidden absolute right-16 bg-[#0f1220] border border-white/10 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap">Chat en WhatsApp</span>
   </button>
-
   <div id="toastContainer" class="fixed bottom-4 right-4 z-[70] space-y-2 pointer-events-none"></div>
 
-  <!-- Quick View Modal -->
   <div id="quickViewModal" class="hidden fixed inset-0 z-[70] flex items-center justify-center p-4">
     <div id="quickViewBackdrop" class="absolute inset-0 bg-black/70 backdrop-blur-md"></div>
-    <div class="relative bg-[#0f1220] border border-white/10 rounded-2xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
-      <button id="closeQuickView" aria-label="Cerrar" class="absolute right-4 top-4 h-8 w-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center">&times;</button>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <img id="qvImage" class="w-full h-48 md:h-64 object-cover rounded-xl bg-white/5" src="" alt="">
-        <div class="space-y-4">
-          <h3 id="qvTitle" class="text-xl font-bold"></h3>
-          <div id="qvRating" class="flex items-center gap-1 text-amber-400"></div>
-          <p id="qvDescription" class="text-sm text-gray-300 leading-relaxed"></p>
-          <ul id="qvBenefits" class="space-y-1.5 text-sm text-gray-300"></ul>
-          <div class="flex items-center gap-4 pt-2">
-            <span id="qvPrice" class="text-2xl font-bold"></span>
-            <button id="qvAddToCart" class="flex-1 bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-semibold py-2.5 px-4 rounded-xl transition">Agregar al Carrito</button>
-          </div>
+    <div class="relative bg-[#0f1220] border border-white/10 rounded-2xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <button id="closeQuickView" class="absolute right-4 top-4 h-8 w-8 rounded-lg bg-white/5 flex items-center justify-center">✕</button>
+      <div class="grid md:grid-cols-2 gap-6">
+        <img id="qvImage" class="w-full h-48 object-cover rounded-xl bg-white/5" src="" alt="">
+        <div class="space-y-3">
+          <h3 id="qvTitle" class="font-bold"></h3><div id="qvRating" class="flex gap-1 text-amber-400 text-xs"></div>
+          <p id="qvDescription" class="text-sm text-gray-400"></p><ul id="qvBenefits" class="text-xs text-gray-400 space-y-1"></ul>
+          <div class="flex items-center gap-3"><span id="qvPrice" class="font-bold"></span><button id="qvAddToCart" class="flex-1 bg-[#D4A017] text-black font-bold py-2.5 rounded-xl">Agregar</button></div>
         </div>
       </div>
     </div>

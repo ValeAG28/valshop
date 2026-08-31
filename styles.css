@@ -27,7 +27,8 @@
 .lucide { width:1em; height:1em; }
 @media (max-width:639px){ #cartPanel{ width:100% !important; } }
 .payment-option { border:1.5px solid rgba(255,255,255,0.08); transition: all 200ms; }
-.payment-option:has(input:checked) { border-color: #6366f1; background: rgba(99,102,241,0.08); box-shadow: 0 0 0 1px rgba(99,102,241,0.3); }
+.payment-option:has(input:checked) { border-color: #D4A017; background: rgba(212,160,23,0.10); box-shadow: 0 0 0 1px rgba(212,160,23,0.35); }
 .nav-link { position:relative; }
-.nav-link::after{ content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,#6366f1,#06b6d4); transition:width 200ms; }
+.nav-link::after{ content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,#D4A017,#FFD700); transition:width 200ms; }
 .nav-link:hover::after, .nav-link.active::after{ width:100%; }
+.gold-glow { box-shadow: 0 0 20px rgba(212,160,23,0.25), 0 0 40px rgba(212,160,23,0.12); }
