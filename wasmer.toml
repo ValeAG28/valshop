@@ -1,0 +1,11 @@
+[package]
+name = "valeag28/valshop"
+version = "0.1.1"
+description = "VAL Digital Services – Licencias, Streaming y IA Premium"
+readme = "README.md"
+
+[dependencies]
+"sharrattj/static-web-server" = "1"
+
+[fs]
+public = "."

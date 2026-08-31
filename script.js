@@ -2,26 +2,24 @@
 // =============================================================
 
 (() => {
+  // ----- CONFIG -----
+  const CONFIG = {
+    whatsappPhone: '5491123456789', // <-- Reemplazar por número real VAL (con prefijo país)
+    supportEmail: 'soporte@valdigital.com',
+    supportPhoneDisplay: '+54 9 11 2345-6789'
+  };
   // ----- STATE -----
   const state = {
-    products: [], // filled with sample data
-    cart: [], // array of { id, qty }
+    products: [],
+    cart: [],
     currency: 'USD',
     search: '',
     activeCategory: 'All',
-    sort: 'featured', // featured, price-asc, price-desc, rating
-    coupons: {
-      VAL10: 0.1,
-      PROMO20: 0.2
-    },
+    sort: 'featured',
+    coupons: { VAL10: 0.1, PROMO20: 0.2 },
     appliedCoupon: null,
-    rates: {
-      USD: 1,
-      EUR: 0.92,
-      ARS: 350,
-      MXN: 17,
-      COP: 4000
-    }
+    paymentMethod: 'transferencia',
+    rates: { USD: 1, EUR: 0.92, ARS: 350, MXN: 17, COP: 4000 }
   };
 
   // ----- SAMPLE PRODUCT DATA -----
@@ -175,11 +173,14 @@
     const saved = localStorage.getItem('valCart');
     if (saved) {
       try {
-        state.cart = JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        state.cart = Array.isArray(parsed) ? parsed.filter(i => i && typeof i.id === 'number' && typeof i.qty === 'number') : [];
       } catch (e) {
         state.cart = [];
+        localStorage.removeItem('valCart');
       }
     }
+    if (!Array.isArray(state.cart)) state.cart = [];
   }
 
   function saveCartToLocalStorage() {
@@ -394,10 +395,7 @@
     saveCartToLocalStorage();
     updateCartBadge();
     showToast('Producto agregado al carrito');
-    // Update cart UI if drawer is open
-    const cartDrawer = document.getElementById('cartDrawer');
-    const cartPanel = document.getElementById('cartPanel');
-    if (!cartDrawer.classList.contains('pointer-events-none')) {
+    if (window.updateCartState && !document.getElementById('cartDrawer').classList.contains('hidden')) {
       renderCartItems();
       updateCartSummary();
     }
@@ -529,44 +527,50 @@
   }
 
   function generateWhatsAppLink() {
-    if (state.cart.length === 0) return null;
+    if (!Array.isArray(state.cart) || state.cart.length === 0) return null;
     const orderId = '#VAL-' + Math.floor(Math.random()*1000000).toString().padStart(6, '0');
+    const paymentLabels = { transferencia:'Transferencia / Depósito', mercadopago:'Mercado Pago', paypal:'PayPal', stripe:'Tarjeta (Stripe)' };
     const lines = [
       `*Nuevo pedido VAL Digital Services*`,
       `*ID:* ${orderId}`,
+      `*Método de pago:* ${paymentLabels[state.paymentMethod] || state.paymentMethod}`,
+      `*Moneda:* ${state.currency}`,
       '',
       '*Productos:*'
     ];
     state.cart.forEach(item => {
       const product = state.products.find(p => p.id === item.id);
+      if (!product) return;
       const unit = convertPrice(product.priceUSD);
       const line = `- ${product.name} x${item.qty} = ${formatPrice(unit * item.qty)}`;
       lines.push(line);
     });
     const subtotal = state.cart.reduce((sum, item) => {
       const product = state.products.find(p => p.id === item.id);
+      if (!product) return sum;
       return sum + (convertPrice(product.priceUSD) * item.qty);
     }, 0);
     const discount = appliedDiscountAmount(subtotal);
     const total = subtotal - discount;
-    lines.push('', '*Subtotal:*', formatPrice(subtotal));
-    if (discount > 0) {
-      lines.push(`*Descuento (${state.appliedCoupon}):*`, `-${formatPrice(discount)}`);
-    }
-    lines.push(`*Total:*`, formatPrice(total));
+    lines.push('', `*Subtotal:* ${formatPrice(subtotal)}`);
+    if (discount > 0) lines.push(`*Descuento (${state.appliedCoupon}):* -${formatPrice(discount)}`);
+    lines.push(`*Total (${state.currency}):* ${formatPrice(total)}`);
     lines.push('', '_Gracias por confiar en VAL Digital Services._');
-    const text = lines.join('%0A');
-    const phone = '1234567890'; // placeholder, you can set real number
-    return `https://wa.me/${phone}?text=${text}`;
+    const text = encodeURIComponent(lines.join('\n'));
+    return `https://wa.me/${CONFIG.whatsappPhone}?text=${text}`;
   }
 
   function checkout() {
-    const link = generateWhatsAppLink();
-    if (link) {
-      window.open(link, '_blank');
-    } else {
+    if (!Array.isArray(state.cart) || state.cart.length === 0) {
       showToast('Tu carrito está vacío', 'error');
+      return;
     }
+    if (['mercadopago','paypal','stripe'].includes(state.paymentMethod)) {
+      showToast(`Redirigiendo a ${state.paymentMethod}... (pronto) — usando WhatsApp por ahora`, 'success');
+    }
+    const link = generateWhatsAppLink();
+    if (link) window.open(link, '_blank');
+    else showToast('No se pudo generar el pedido', 'error');
   }
 
   // ----- UTILS -----
@@ -648,41 +652,42 @@
       }
     });
 
-    // Cart drawer toggle
+    // Cart drawer toggle (corregido: hidden + scroll lock + ESC)
     const cartBtn = document.getElementById('cartButton');
     const cartDrawer = document.getElementById('cartDrawer');
+    const cartBackdrop = document.getElementById('cartBackdrop');
     const closeCart = document.getElementById('closeCart');
     const cartPanel = document.getElementById('cartPanel');
     const updateCartState = (open) => {
       if (open) {
-        cartDrawer.classList.remove('pointer-events-none');
+        cartDrawer.classList.remove('hidden');
+        // force reflow for transition
+        void cartPanel.offsetWidth;
         cartPanel.classList.remove('translate-x-full');
+        document.body.style.overflow = 'hidden';
         renderCartItems();
         updateCartSummary();
-        requestAnimationFrame(() => {
-          closeCart.focus();
-        });
+        requestAnimationFrame(() => closeCart.focus());
       } else {
-        cartDrawer.classList.add('pointer-events-none');
         cartPanel.classList.add('translate-x-full');
+        document.body.style.overflow = '';
+        setTimeout(() => cartDrawer.classList.add('hidden'), 300);
       }
     };
+    window.updateCartState = updateCartState;
     cartBtn.addEventListener('click', () => {
-      const isOpen = !cartPanel.classList.contains('translate-x-full');
+      const isOpen = !cartDrawer.classList.contains('hidden') && !cartPanel.classList.contains('translate-x-full');
       updateCartState(!isOpen);
     });
-    closeCart.addEventListener('click', () => {
-      updateCartState(false);
-    });
-    // Close when clicking on backdrop
-    cartDrawer.addEventListener('click', (e) => {
-      if (e.target === cartDrawer) {
+    closeCart.addEventListener('click', () => updateCartState(false));
+    cartBackdrop.addEventListener('click', () => updateCartState(false));
+    cartPanel.addEventListener('click', (e) => e.stopPropagation());
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !cartDrawer.classList.contains('hidden')) {
         updateCartState(false);
+        const qv = document.getElementById('quickViewModal');
+        if (!qv.classList.contains('hidden')) closeQuickView();
       }
-    });
-    // Prevent closing when clicking inside panel
-    cartPanel.addEventListener('click', (e) => {
-      e.stopPropagation();
     });
 
     // Apply coupon button
@@ -697,15 +702,55 @@
       if (e.target === e.currentTarget) closeQuickView();
     });
 
-    // WhatsApp float button tooltip
+    // WhatsApp float button (ahora funcional)
     const waBtn = document.getElementById('whatsappFloat');
     const tooltip = document.getElementById('whatsappTooltip');
-    waBtn.addEventListener('mouseenter', () => {
-      tooltip.classList.remove('hidden');
+    waBtn.addEventListener('mouseenter', () => tooltip.classList.remove('hidden'));
+    waBtn.addEventListener('mouseleave', () => tooltip.classList.add('hidden'));
+    waBtn.addEventListener('click', () => {
+      const msg = encodeURIComponent('Hola VAL Digital Services 👋 Quisiera consultar por licencias disponibles');
+      window.open(`https://wa.me/${CONFIG.whatsappPhone}?text=${msg}`, '_blank');
     });
-    waBtn.addEventListener('mouseleave', () => {
-      tooltip.classList.add('hidden');
+    // Payment method selector
+    document.querySelectorAll('input[name="paymentMethod"]').forEach(r => {
+      r.addEventListener('change', (e) => {
+        state.paymentMethod = e.target.value;
+        const pmLabel = { transferencia:'Transferencia', mercadopago:'Mercado Pago', paypal:'PayPal', stripe:'Tarjeta' };
+        showToast(`Método: ${pmLabel[state.paymentMethod]}`, 'success');
+      });
     });
+    // Contact form
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+      contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const data = new FormData(contactForm);
+        const nombre = (data.get('nombre')||'').toString().trim();
+        const email = (data.get('email')||'').toString().trim();
+        const mensaje = (data.get('mensaje')||'').toString().trim();
+        if (!nombre || !email || !mensaje || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          showToast('Completa nombre, email válido y mensaje', 'error');
+          return;
+        }
+        const ticket = '#SOP-' + Math.floor(Math.random()*1000000).toString().padStart(6,'0');
+        showToast(`Mensaje enviado ${ticket} — te respondemos < 2h`, 'success');
+        const waMsg = encodeURIComponent(`*Nuevo contacto VAL*%0A*Ticket:* ${ticket}%0A*Nombre:* ${nombre}%0A*Email:* ${email}%0A*Mensaje:* ${mensaje}`);
+        window.open(`https://wa.me/${CONFIG.whatsappPhone}?text=${waMsg}`, '_blank');
+        contactForm.reset();
+      });
+    }
+    // Soporte search filter
+    const soporteSearch = document.getElementById('soporteSearch');
+    if (soporteSearch) {
+      soporteSearch.addEventListener('input', (e) => {
+        const q = e.target.value.toLowerCase();
+        document.querySelectorAll('#faqAccordion [data-index]').forEach(h => {
+          const card = h.parentElement;
+          const txt = (h.textContent + card.querySelector('div.hidden, div:not(.hidden):last-child')?.textContent || '').toLowerCase();
+          card.style.display = txt.includes(q) ? '' : 'none';
+        });
+      });
+    }
 
     // Initial renders
     renderCartItems();
@@ -759,26 +804,14 @@
   function renderFAQ() {
     const container = document.getElementById('faqAccordion');
     const faqs = [
-      {
-        q: "¿Cómo recibo mi licencia después de la compra?",
-        a: "Recibes el código de activación o enlace de descarga por WhatsApp o correo electrónico en menos de 5 minutos después de confirmar el pago."
-      },
-      {
-        q: "¿Las licencias son oficiales y garantizadas?",
-        a: "Sí. Todas nuestras licencias son 100% legales, provienen de distribuidores autorizados y incluyen garantía de reemplazo si hay algún problema."
-      },
-      {
-        q: "¿Puedo cambiar o devolver una licencia?",
-        a: "Debido a la naturaleza digital de los productos, no se aceptan devoluciones una vez entregado el código. Sin embargo, si el código no funciona, te lo reemplazamos inmediatamente."
-      },
-      {
-        q: "¿Qué métodos de pago aceptan?",
-        a: "Aceptamos transferencias bancarias, depósitos y pagos mediante billeteras virtuales. El pago se confirma antes de enviar la licencia."
-      },
-      {
-        q: "¿Hay soporte post-venta?",
-        a: "Sí. Ofrecemos asistencia por WhatsApp para instalación, activación y cualquier duda técnica durante el primer mes."
-      }
+      { q: "¿Cómo recibo mi licencia después de la compra?", a: "Recibes el código de activación o enlace de descarga por WhatsApp o correo electrónico en menos de 5 minutos después de confirmar el pago." },
+      { q: "¿Las licencias son oficiales y garantizadas?", a: "Sí. Todas son 100% legales, de distribuidores autorizados, con garantía de reemplazo inmediato si hay algún inconveniente." },
+      { q: "¿Puedo cambiar o devolver una licencia?", a: "Por ser producto digital no hay devoluciones una vez entregado el código. Si el código no funciona, lo reemplazamos al instante." },
+      { q: "¿Qué métodos de pago aceptan?", a: "Transferencia bancaria (alias/CBU), Mercado Pago (tarjeta, débito, efectivo), PayPal y Stripe (Visa/Master/Amex). Elegís el método en el carrito antes del checkout. Descuento 10% con VAL10 y 20% con PROMO20." },
+      { q: "¿Hay soporte post-venta?", a: "Sí. Soporte por WhatsApp y email durante el primer mes para instalación y activación. Tiempo de respuesta < 2h (Lun-Dom 9-21 AR, urgencias 24/7)." },
+      { q: "¿En cuánto tiempo llega la entrega?", a: "Promedio < 5 minutos tras confirmar pago. Si elegís transferencia, enviá comprobante por WhatsApp para acelerar." },
+      { q: "¿Puedo cambiar de moneda?", a: "Sí. Selector arriba a la derecha: USD, EUR, ARS, MXN, COP. El total se recalcula al instante con tipo de cambio indicativo." },
+      { q: "¿La garantía cubre actualizaciones?", a: "Sí, las licencias incluyen actualizaciones mientras el plan esté vigente (ej. Microsoft 365, Adobe CC)." }
     ];
     container.innerHTML = '';
     faqs.forEach((faq, index) => {
