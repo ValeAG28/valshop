@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4A017"/>
+      <stop offset="100%" stop-color="#FFD700"/>
+    </linearGradient>
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(212,160,23,0.15)"/>
+      <stop offset="100%" stop-color="rgba(5,8,20,1)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#050814"/>
+  <rect width="1200" height="630" fill="url(#bgGlow)"/>
+  
+  <!-- VAL Logo centered -->
+  <g transform="translate(600, 280)">
+    <circle r="80" fill="url(#gold)" filter="drop-shadow(0 0 40px rgba(212,160,23,0.4))"/>
+    <text x="0" y="15" font-family="Helvetica, Arial, sans-serif" font-size="80" font-weight="800" fill="#000" text-anchor="middle" letter-spacing="2">V</text>
+    <text x="0" y="65" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="600" fill="#FFD700" text-anchor="middle" letter-spacing="6" opacity="0.9">DIGITAL SERVICES</text>
+  </g>
+  
+  <!-- Title -->
+  <text x="600" y="420" font-family="Helvetica, Arial, sans-serif" font-size="48" font-weight="300" fill="white" text-anchor="middle" letter-spacing="1.2">VAL Digital Services</text>
+  <text x="600" y="470" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="300" fill="#D4A017" text-anchor="middle" letter-spacing="0.5">Your digital world, all in one place.</text>
+  
+  <!-- Badges -->
+  <g transform="translate(600, 520)">
+    <circle r="8" fill="#D4A017" cx="-180" cy="0"/>
+    <text x="-180" y="5" font-size="10" font-weight="800" fill="#000" text-anchor="middle">✦</text>
+    <text x="-180" y="22" font-size="9" font-weight="700" fill="#000" text-anchor="middle">PREMIUM</text>
+    
+    <circle r="8" fill="#D4A017" cx="-60" cy="0"/>
+    <text x="-60" y="5" font-size="10" fill="#000" text-anchor="middle">🛡</text>
+    <text x="-60" y="22" font-size="9" font-weight="700" fill="#000" text-anchor="middle">TRUST</text>
+    
+    <circle r="8" fill="#D4A017" cx="60" cy="0"/>
+    <text x="60" y="5" font-size="10" fill="#000" text-anchor="middle">⚡</text>
+    <text x="60" y="22" font-size="9" font-weight="700" fill="#000" text-anchor="middle">INSTANT</text>
+    
+    <circle r="8" fill="#D4A017" cx="180" cy="0"/>
+    <text x="180" y="5" font-size="10" fill="#000" text-anchor="middle">🎧</text>
+    <text x="180" y="22" font-size="9" font-weight="700" fill="#000" text-anchor="middle">SUPPORT</text>
+  </g>
+</svg>

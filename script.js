@@ -2,11 +2,16 @@
 // =============================================================
 
 (() => {
-  // ----- CONFIG -----
+  // ----- LUCIDE ICONS INIT -----
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+
+  // ----- CONFIG GLOBAL -----
   const CONFIG = {
-    whatsappPhone: '5491123456789', // <-- Reemplazar por número real VAL (con prefijo país)
-    supportEmail: 'soporte@valdigital.com',
-    supportPhoneDisplay: '+54 9 11 2345-6789'
+    whatsappPhone: '12025551234',
+    supportEmail: 'support@valdigital.com',
+    supportPhoneDisplay: '+1 202 555 1234'
   };
   // ----- STATE -----
   const state = {
@@ -19,35 +24,35 @@
     coupons: { VAL10: 0.1, PROMO20: 0.2 },
     appliedCoupon: null,
     paymentMethod: 'transferencia',
-    rates: { USD: 1, EUR: 0.92, ARS: 350, MXN: 17, COP: 4000 }
+    rates: { USD: 1, EUR: 0.92, GBP: 0.79 }
   };
 
   const CATEGORY_META = {
-    'Todos': { icon: '▦', label: 'Todos' },
-    'Streaming': { icon: '▶', label: 'Streaming' },
-    'Música': { icon: '♫', label: 'Música' },
-    'IA': { icon: '✦', label: 'IA' },
-    'Edición': { icon: '✎', label: 'Edición' },
-    'Gaming': { icon: '🎮', label: 'Gaming' },
-    'VPN': { icon: '♢', label: 'VPN' },
-    'Correos': { icon: '✉', label: 'Correos' },
-    'Links & Promos': { icon: '🔗', label: 'Links & Promos' }
+    'All': { icon: 'layout-grid', label: 'All' },
+    'Streaming': { icon: 'tv', label: 'Streaming' },
+    'Music': { icon: 'music-2', label: 'Music' },
+    'AI': { icon: 'sparkles', label: 'AI' },
+    'Editing': { icon: 'palette', label: 'Editing' },
+    'Gaming': { icon: 'gamepad-2', label: 'Gaming' },
+    'VPN': { icon: 'shield', label: 'VPN' },
+    'Email': { icon: 'mail', label: 'Email' },
+    'Links & Promos': { icon: 'link-2', label: 'Links & Promos' }
   };
-  const CATEGORIES_ORDER = ['Todos','Streaming','Música','IA','Edición','Gaming','VPN','Correos','Links & Promos'];
+  const CATEGORIES_ORDER = ['All','Streaming','Music','AI','Editing','Gaming','VPN','Email','Links & Promos'];
   // ----- SAMPLE PRODUCT DATA (9 categorías) -----
   const sampleProducts = [
-    { id: 1, name: "Netflix Premium 4K", category: "Streaming", priceUSD: 15.99, rating: 4.9, badge: "Más Vendido", image: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=400", description: "Cuenta premium UHD, 4 pantallas.", benefits: ["4K + HDR","4 pantallas","Sin anuncios","Entrega <5 min"] },
-    { id: 2, name: "Spotify Familiar", category: "Música", priceUSD: 9.99, rating: 4.9, badge: "", image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400", description: "Música sin límites, sin anuncios.", benefits: ["Offline","6 cuentas","Alta calidad","Soporte 24/7"] },
-    { id: 3, name: "YouTube Premium", category: "Música", priceUSD: 12.99, rating: 4.8, badge: "", image: "https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=400", description: "Sin anuncios + YouTube Music.", benefits: ["Sin anuncios","Background play","Descargas","Music premium"] },
-    { id: 4, name: "ChatGPT Plus", category: "IA", priceUSD: 20.00, rating: 4.9, badge: "IA", image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400", description: "GPT-4o prioritario.", benefits: ["GPT-4o","Respuesta rápida","Plugins","Soporte"] },
-    { id: 5, name: "Midjourney Pro", category: "IA", priceUSD: 30.00, rating: 4.7, badge: "", image: "https://images.unsplash.com/photo-1686191128903-3d9f9d2e5b6b?w=400", description: "Generación de imágenes ilimitada.", benefits: ["Imágenes HD","Modo relax","Comercial","Entrega rápida"] },
-    { id: 6, name: "Adobe Creative Cloud", category: "Edición", priceUSD: 54.99, rating: 4.8, badge: "Premium", image: "https://images.unsplash.com/photo-1558655146-d09347e92766?w=400", description: "Suite completa edición.", benefits: ["Photoshop","Illustrator","Premiere","100GB nube"] },
-    { id: 7, name: "Canva Pro Equipo", category: "Edición", priceUSD: 14.90, rating: 4.8, badge: "", image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400", description: "Diseño pro colaborativo.", benefits: ["Plantillas premium","Marca","Colaboración","Entrega instantánea"] },
-    { id: 8, name: "Xbox Game Pass Ultimate", category: "Gaming", priceUSD: 16.99, rating: 4.9, badge: "", image: "https://images.unsplash.com/photo-1604586376807-f73185cf5867?w=400", description: "Cientos de juegos + EA Play.", benefits: ["Consola+PC","Nube","EA Play","Online"] },
-    { id: 9, name: "NordVPN 1 Año", category: "VPN", priceUSD: 49.00, rating: 4.7, badge: "Oferta", image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400", description: "VPN premium 6 dispositivos.", benefits: ["AES-256","60 países","Kill switch","Ad block"] },
-    { id: 10, name: "Proton Mail Plus", category: "Correos", priceUSD: 5.99, rating: 4.6, badge: "", image: "https://images.unsplash.com/photo-1596526131083-e8c633c948d2?w=400", description: "Correo cifrado premium.", benefits: ["Cifrado","15GB","Dominio propio","Soporte"] },
-    { id: 11, name: "Prime Video + Deezer Pack", category: "Links & Promos", priceUSD: 8.99, rating: 4.7, badge: "Promo", image: "https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=400", description: "Combo promo streaming + música.", benefits: ["2 servicios","Ahorro 30%","Stock disponible","Entrega rápida"] },
-    { id: 12, name: "Crunchyroll Mega Fan", category: "Streaming", priceUSD: 9.99, rating: 4.8, badge: "", image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400", description: "Anime sin anuncios offline.", benefits: ["Sin anuncios","Offline","4 streams","Entrega <5 min"] }
+    { id: 1, name: "Netflix Premium 4K", category: "Streaming", priceUSD: 15.99, rating: 4.9, badge: "Best Seller", image: "assets/icons/products/netflix.svg", description: "Premium UHD account, 4 screens.", benefits: ["4K + HDR","4 screens","No ads","Delivery <5 min"] },
+    { id: 2, name: "Spotify Family", category: "Music", priceUSD: 9.99, rating: 4.9, badge: "", image: "assets/icons/products/spotify.svg", description: "Music without limits, no ads.", benefits: ["Offline","6 accounts","High quality","24/7 Support"] },
+    { id: 3, name: "YouTube Premium", category: "Music", priceUSD: 12.99, rating: 4.8, badge: "", image: "assets/icons/products/youtube.svg", description: "No ads + YouTube Music.", benefits: ["No ads","Background play","Downloads","Music premium"] },
+    { id: 4, name: "ChatGPT Plus", category: "AI", priceUSD: 20.00, rating: 4.9, badge: "AI", image: "assets/icons/products/chatgpt.svg", description: "Priority GPT-4o access.", benefits: ["GPT-4o","Faster response","Plugins","Support"] },
+    { id: 5, name: "Midjourney Pro", category: "AI", priceUSD: 30.00, rating: 4.7, badge: "", image: "assets/icons/products/midjourney.svg", description: "Unlimited image generation.", benefits: ["HD Images","Relax mode","Commercial","Fast delivery"] },
+    { id: 6, name: "Adobe Creative Cloud", category: "Editing", priceUSD: 54.99, rating: 4.8, badge: "Premium", image: "assets/icons/products/adobe.svg", description: "Complete editing suite.", benefits: ["Photoshop","Illustrator","Premiere","100GB Cloud"] },
+    { id: 7, name: "Canva Pro Team", category: "Editing", priceUSD: 14.90, rating: 4.8, badge: "", image: "assets/icons/products/canva.svg", description: "Pro collaborative design.", benefits: ["Premium templates","Brand kit","Collaboration","Instant delivery"] },
+    { id: 8, name: "Xbox Game Pass Ultimate", category: "Gaming", priceUSD: 16.99, rating: 4.9, badge: "", image: "assets/icons/products/xbox.svg", description: "Hundreds of games + EA Play.", benefits: ["Console+PC","Cloud","EA Play","Online"] },
+    { id: 9, name: "NordVPN 1 Year", category: "VPN", priceUSD: 49.00, rating: 4.7, badge: "Offer", image: "assets/icons/products/nordvpn.svg", description: "Premium VPN 6 devices.", benefits: ["AES-256","60 countries","Kill switch","Ad block"] },
+    { id: 10, name: "Proton Mail Plus", category: "Email", priceUSD: 5.99, rating: 4.6, badge: "", image: "assets/icons/products/proton.svg", description: "Encrypted email premium.", benefits: ["Encryption","15GB","Custom domain","Support"] },
+    { id: 11, name: "Prime Video + Deezer Pack", category: "Links & Promos", priceUSD: 8.99, rating: 4.7, badge: "Promo", image: "assets/icons/products/prime-deezer.svg", description: "Combo promo streaming + music.", benefits: ["2 services","30% off","Stock available","Fast delivery"] },
+    { id: 12, name: "Crunchyroll Mega Fan", category: "Streaming", priceUSD: 9.99, rating: 4.8, badge: "", image: "assets/icons/products/crunchyroll.svg", description: "Anime no ads offline.", benefits: ["No ads","Offline","4 streams","Delivery <5 min"] }
   ];
 
   // ----- INIT -----
@@ -156,17 +161,21 @@
     const categories = CATEGORIES_ORDER;
     categoryFilters.innerHTML = '';
     categories.forEach(cat => {
-      const meta = CATEGORY_META[cat] || {icon:'•', label:cat};
-      const isActive = state.activeCategory === cat || (cat==='Todos' && state.activeCategory==='All');
+      const meta = CATEGORY_META[cat] || {icon:'layout-grid', label:cat};
+      const isActive = state.activeCategory === cat || (cat==='All' && state.activeCategory==='All');
       const btn = document.createElement('button');
-      btn.innerHTML = `${meta.icon} ${meta.label}`;
-      btn.className = `px-3.5 py-2 text-xs font-semibold rounded-full border transition ${isActive ? 'bg-white text-black border-white' : 'bg-white/[0.06] text-gray-300 border-white/10 hover:bg-white/10 hover:text-white'}`;
+      btn.innerHTML = `<i data-lucide="${meta.icon}" class="w-3.5 h-3.5"></i> ${meta.label}`;
+      btn.className = `px-3.5 py-2 text-xs font-semibold rounded-full border transition ${isActive ? 'bg-white text-black border-white' : 'bg-white/[0.06] text-gray-300 border-white/10 hover:bg-white/10 hover:text-white'} flex items-center gap-1.5`;
       btn.addEventListener('click', () => {
-        state.activeCategory = cat==='Todos' ? 'All' : cat;
+        state.activeCategory = cat==='All' ? 'All' : cat;
         renderProductGrid();
       });
       categoryFilters.appendChild(btn);
     });
+    // Re-initialize Lucide icons for new category pills
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
 
     // Filter products
     let filtered = state.products.filter(p => {
@@ -209,8 +218,8 @@
       card.className = `glass rounded-2xl overflow-hidden card-lift border border-white/5`;
       card.innerHTML = `
         <div class="relative">
-          <img src="${product.image}" alt="${product.name}" class="w-full h-44 object-cover">
-          <span class="absolute top-3 left-3 bg-[#D4A017] text-black text-[10px] font-bold px-2 py-1 rounded-full">● Stock disponible</span>
+          <img src="${product.image}" alt="${product.name}" class="w-full h-44 object-contain bg-gradient-to-br from-[#0f1220] to-[#050814] border border-white/5 p-4">
+          <span class="absolute top-3 left-3 bg-[#D4A017] text-black text-[10px] font-bold px-2 py-1 rounded-full">● In Stock</span>
           ${product.badge ? `<span class="absolute top-3 right-3 bg-white text-black text-[10px] font-bold px-2 py-1 rounded-full">${product.badge}</span>` : ''}
         </div>
         <div class="p-4 space-y-2">
@@ -219,16 +228,21 @@
           <p class="text-xs text-gray-500 line-clamp-2">${product.description}</p>
           <div class="flex items-center justify-between pt-2">
             <span class="text-sm font-black">${formatPrice(convertPrice(product.priceUSD))}</span>
-            <span class="text-[11px] text-amber-400">★ ${product.rating.toFixed(1)}</span>
+            <span class="text-[11px] text-amber-400 flex items-center gap-0.5"><i data-lucide="star" class="w-3 h-3 fill-yellow-400"></i> ${product.rating.toFixed(1)}</span>
           </div>
           <div class="grid grid-cols-2 gap-2 pt-2">
-            <button class="qv-btn bg-white/[0.06] border border-white/10 hover:bg-white/10 text-xs font-medium py-2 rounded-full" data-id="${product.id}">Vista Rápida</button>
-            <button class="add-to-cart bg-white text-black hover:bg-gray-100 text-xs font-bold py-2 rounded-full" data-id="${product.id}">Agregar</button>
+            <button class="qv-btn bg-white/[0.06] border border-white/10 hover:bg-white/10 text-xs font-medium py-2 rounded-full" data-id="${product.id}">Quick View</button>
+            <button class="add-to-cart bg-white text-black hover:bg-gray-100 text-xs font-bold py-2 rounded-full" data-id="${product.id}">Add</button>
           </div>
         </div>
       `;
       grid.appendChild(card);
     });
+
+    // Re-initialize Lucide icons for new product cards (stars, etc.)
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
 
     // Attach listeners to buttons
     grid.querySelectorAll('.qv-btn').forEach(btn => {
@@ -254,10 +268,10 @@
     document.getElementById('qvImage').alt = product.name;
     document.getElementById('qvTitle').textContent = product.name;
     const ratingEl = document.getElementById('qvRating');
-    ratingEl.innerHTML = `★ ${product.rating.toFixed(1)} · ${product.category}`;
+    ratingEl.innerHTML = `<i data-lucide="star" class="w-3 h-3 fill-amber-400"></i> ${product.rating.toFixed(1)} · ${product.category}`;
     document.getElementById('qvDescription').textContent = product.description;
     const benefitsEl = document.getElementById('qvBenefits');
-    benefitsEl.innerHTML = product.benefits.map(b => `<li>✓ ${b}</li>`).join('');
+    benefitsEl.innerHTML = product.benefits.map(b => `<li class="flex items-center gap-2"><i data-lucide="check" class="w-3 h-3 text-[#D4A017]"></i> ${b}</li>`).join('');
     document.getElementById('qvPrice').textContent = formatPrice(convertPrice(product.priceUSD));
     document.getElementById('qvAddToCart').dataset.id = product.id;
     modal.classList.remove('hidden');
@@ -267,6 +281,10 @@
     backdrop.classList.add('opacity-100');
     document.body.classList.add('overlay-open');
     document.body.style.overflow = 'hidden';
+    // Re-initialize Lucide icons for new modal content
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
     document.getElementById('closeQuickView').focus();
   }
 
@@ -274,8 +292,9 @@
     const modal = document.getElementById('quickViewModal');
     const backdrop = document.getElementById('quickViewBackdrop');
     if (!modal || modal.classList.contains('hidden')) return;
-    backdrop.classList.add('opacity-0');
-    backdrop.classList.remove('opacity-100');
+    const backdropEl = document.getElementById('quickViewBackdrop');
+    backdropEl.classList.add('opacity-0');
+    backdropEl.classList.remove('opacity-100');
     modal.setAttribute('aria-hidden','true');
     if (document.getElementById('cartDrawer').classList.contains('hidden')) {
       document.body.classList.remove('overlay-open');
@@ -665,6 +684,11 @@
     // Initial renders
     renderCartItems();
     updateCartSummary();
+
+    // Initialize Lucide icons after all DOM is ready
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
   }
 
   // ----- TESTIMONIALS & FAQ (static data) -----

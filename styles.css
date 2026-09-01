@@ -1,48 +1,712 @@
-/* VAL Digital Services — Modern Ecommerce Overlays & Premium */
+/* VAL Digital Services — Shopify-Inspired Design System */
+/* Two-track: Cinematic Night (marketing) + Light/Cream (transactional) */
+/* Gold accent: #D4A017 / #FFD700 | Thin display weight 330 | Pill buttons only */
+
+/* === CSS Custom Properties (Design Tokens) === */
+:root {
+  /* Colors - Shopify-inspired two-track */
+  --color-primary: #000000;
+  --color-ink: #000000;
+  --color-on-primary: #ffffff;
+  --color-on-dark: #ffffff;
+  --color-canvas-night: #000000;
+  --color-canvas-night-elevated: #0a0a0a;
+  --color-canvas-light: #ffffff;
+  --color-canvas-cream: #fbfbf5;
+  --color-surface-elevated-dark: #1e2c31;
+  --color-shade-30: #d4d4d8;
+  --color-shade-40: #a1a1aa;
+  --color-shade-50: #71717a;
+  --color-shade-60: #52525b;
+  --color-shade-70: #3f3f46;
+  --color-hairline-light: #e4e4e7;
+  --color-hairline-dark: #1e2c31;
+  --color-aloe-10: #c1fbd4;
+  --color-pistachio-10: #d4f9e0;
+  --color-link-cool-1: #9dabad;
+  --color-link-cool-2: #9797a2;
+  --color-link-cool-3: #bdbdca;
+  --color-link-mint: #99b3ad;
+
+  /* VAL Gold Brand Colors */
+  --color-val-gold: #D4A017;
+  --color-val-gold-light: #FFD700;
+  --color-val-bg: #050814;
+  --color-val-card: #0f1220;
+
+  /* Typography */
+  --font-display: 'NeueHaasGrotesk Display', Helvetica, Arial, sans-serif;
+  --font-ui: 'Inter Variable', 'Inter', Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-feature-ss03: 'ss03';
+
+  /* Typography Scale */
+  --text-display-xxl: 96px / 1.0 330 / 2.4px;
+  --text-display-xl: 70px / 1.0 330 / 0;
+  --text-display-lg: 55px / 1.16 330 / 0;
+  --text-display-md: 48px / 1.14 330 / 0;
+  --text-heading-xl: 28px / 1.28 500 / 0.42px;
+  --text-heading-lg: 24px / 1.14 400 / 0.36px;
+  --text-heading-md: 20px / 1.4 500 / 0.3px;
+  --text-heading-sm: 18px / 1.25 500 / 0.72px;
+  --text-body-lg: 18px / 1.56 550 / 0;
+  --text-body-md: 16px / 1.5 420 / 0;
+  --text-body-strong: 16px / 1.5 550 / 0;
+  --text-caption: 14px / 1.49 500 / 0.28px;
+  --text-micro: 13px / 1.5 500 / -0.13px;
+  --text-eyebrow-cap: 12px / 1.2 400 / 0.72px;
+  --text-code: 16px / 1.5 400 / 0;
+
+  /* Spacing */
+  --space-xxs: 2px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 24px;
+  --space-xxl: 32px;
+  --space-huge: 64px;
+
+  /* Border Radius */
+  --radius-xs: 4px;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --radius-pill: 9999px;
+
+  /* Shadows */
+  --shadow-level-1: 0 1px 2px rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.04);
+  --shadow-level-2: 0 0 0 1px rgba(255,255,255,0.08), 0 1px 3px rgba(0,0,0,0.3), 0 5px 10px rgba(0,0,0,0.2);
+  --shadow-level-3: 0 8px 8px rgba(0,0,0,0.1), 0 4px 4px rgba(0,0,0,0.1), 0 2px 2px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.1);
+  --shadow-level-4: 0 25px 50px -12px rgba(0,0,0,0.25);
+
+  /* Gold Brand Colors */
+  --color-gold: #D4A017;
+  --color-gold-light: #FFD700;
+  --color-gold-dark: #B8860B;
+}
+
+/* === Base Styles === */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-ui);
+  font-feature-settings: "ss03";
+  background-color: var(--color-val-bg);
+  color: white;
+  overflow-x: hidden;
+  min-height: 100dvh;
+}
+
+/* === Typography Helpers === */
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 330;
+  font-feature-settings: "ss03";
+}
+
+.font-ui {
+  font-family: var(--font-ui);
+  font-feature-settings: "ss03";
+}
+
+.text-display-xxl { font-size: 96px; line-height: 1.0; font-weight: 330; letter-spacing: 2.4px; }
+.text-display-xl { font-size: 70px; line-height: 1.0; font-weight: 330; }
+.text-display-lg { font-size: 55px; line-height: 1.16; font-weight: 330; }
+.text-display-md { font-size: 48px; line-height: 1.14; font-weight: 330; }
+.text-heading-xl { font-size: 28px; line-height: 1.28; font-weight: 500; letter-spacing: 0.42px; }
+.text-heading-lg { font-size: 24px; line-height: 1.14; font-weight: 400; letter-spacing: 0.36px; }
+.text-heading-md { font-size: 20px; line-height: 1.4; font-weight: 500; letter-spacing: 0.3px; }
+.text-heading-sm { font-size: 18px; line-height: 1.25; font-weight: 500; letter-spacing: 0.72px; }
+.text-body-lg { font-size: 18px; line-height: 1.56; font-weight: 550; }
+.text-body-md { font-size: 16px; line-height: 1.5; font-weight: 420; }
+.text-body-strong { font-size: 16px; line-height: 1.5; font-weight: 550; }
+.text-caption { font-size: 14px; line-height: 1.49; font-weight: 500; letter-spacing: 0.28px; }
+.text-micro { font-size: 13px; line-height: 1.5; font-weight: 500; letter-spacing: -0.13px; }
+.text-eyebrow-cap { font-size: 12px; line-height: 1.2; font-weight: 400; letter-spacing: 0.72px; text-transform: uppercase; tracking-wider: 0.05em; }
+.text-code { font-family: var(--font-mono); font-size: 16px; line-height: 1.5; }
+
+/* === Gold Brand Utilities === */
+.bg-gold-gradient {
+  background: linear-gradient(90deg, var(--color-val-gold), var(--color-val-gold-light));
+}
+
+.text-gold-gradient {
+  background: linear-gradient(90deg, var(--color-val-gold), var(--color-val-gold-light));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.border-gold-gradient {
+  border-image: linear-gradient(90deg, var(--color-val-gold), var(--color-val-gold-light)) 1;
+}
+
+.gold-glow {
+  box-shadow: 0 0 20px rgba(212, 160, 23, 0.25), 0 0 40px rgba(212, 160, 23, 0.12);
+}
+
+.gold-glow-hover:hover {
+  box-shadow: 0 0 24px rgba(212, 160, 23, 0.35), 0 0 48px rgba(212, 160, 23, 0.18);
+}
+
+/* === Glass Morphism === */
 .glass {
   background: rgba(17, 19, 38, 0.65);
   backdrop-filter: blur(20px) saturate(1.2);
   -webkit-backdrop-filter: blur(20px) saturate(1.2);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
-.glow-indigo { box-shadow: 0 0 15px rgba(99,102,241,0.4), 0 0 30px rgba(99,102,241,0.2); }
-.glow-cyan { box-shadow: 0 0 15px rgba(6,182,212,0.4), 0 0 30px rgba(6,182,212,0.2); }
-.glow-emerald { box-shadow: 0 0 15px rgba(16,185,129,0.4), 0 0 30px rgba(16,185,129,0.2); }
-.neon-border { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); }
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.4); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.6); }
-/* Modern toast - ecommerce */
-.toast-enter { opacity: 0; transform: translateY(12px) scale(0.98); }
-.toast-enter-active { opacity: 1; transform: translateY(0) scale(1); transition: all 280ms cubic-bezier(0.16,1,0.3,1); }
-.toast-exit { opacity: 1; transform: translateY(0) scale(1); }
-.toast-exit-active { opacity: 0; transform: translateY(12px) scale(0.98); transition: all 250ms ease; }
-#toastContainer > div { pointer-events: auto; backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); }
-@keyframes ping { 75%,100% { transform: scale(2); opacity:0; } }
-/* Modern card - ecommerce: soft shadow, lift, border */
-.card-lift { transition: transform 280ms cubic-bezier(0.16,1,0.3,1), box-shadow 280ms, border-color 280ms; }
-.card-lift:hover { transform: translateY(-6px); box-shadow: 0 16px 32px rgba(0,0,0,0.35), 0 0 0 1px rgba(212,160,23,0.12); border-color: rgba(212,160,23,0.18) !important; }
-.focus-ring-indigo:focus { outline:none; box-shadow: 0 0 0 2px #6366f1, 0 0 0 4px #050814; }
-.lucide { width:1em; height:1em; }
-@media (max-width:639px){ #cartPanel{ width:100% !important; border-radius:0 !important; } }
-/* Payment & nav */
-.payment-option { border:1.5px solid rgba(255,255,255,0.08); transition: all 200ms cubic-bezier(0.16,1,0.3,1); }
-.payment-option:has(input:checked) { border-color: #D4A017; background: rgba(212,160,23,0.10); box-shadow: 0 0 0 1px rgba(212,160,23,0.35); }
-.payment-option:hover { border-color: rgba(255,255,255,0.14); }
-.nav-link { position:relative; }
-.nav-link::after{ content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,#D4A017,#FFD700); transition:width 200ms; }
-.nav-link:hover::after, .nav-link.active::after{ width:100%; }
-.gold-glow { box-shadow: 0 0 20px rgba(212,160,23,0.25), 0 0 40px rgba(212,160,23,0.12); }
-/* OVERLAYS FIX — modern ecommerce */
-#cartDrawer, #quickViewModal { overscroll-behavior: contain; }
-#cartDrawer.hidden, #quickViewModal.hidden { display: none !important; }
-#cartBackdrop, #quickViewBackdrop { transition: opacity 300ms cubic-bezier(0.16,1,0.3,1), backdrop-filter 300ms; }
-#cartPanel { will-change: transform; box-shadow: -24px 0 64px rgba(0,0,0,0.55); }
-#quickViewModal > div:last-child { animation: modalIn 320ms cubic-bezier(0.16,1,0.3,1); }
-@keyframes modalIn { from { opacity:0; transform: translateY(16px) scale(0.98); } to { opacity:1; transform: translateY(0) scale(1); } }
-#currencyMenu, #sortMenu { animation: dropdownIn 200ms cubic-bezier(0.16,1,0.3,1); transform-origin: top right; }
-@keyframes dropdownIn { from { opacity:0; transform: translateY(-6px) scale(0.98); } to { opacity:1; transform: translateY(0) scale(1); } }
-#mobileNav { backdrop-filter: blur(20px); background: rgba(5,8,20,0.96); border-top: 1px solid rgba(255,255,255,0.06); }
+
+.glass-strong {
+  background: rgba(17, 19, 38, 0.8);
+  backdrop-filter: blur(24px) saturate(1.5);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* === Card Lift (Premium Hover) === */
+.card-lift {
+  transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 280ms, border-color 280ms;
+}
+
+.card-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(212, 160, 23, 0.12);
+  border-color: rgba(212, 160, 23, 0.18) !important;
+}
+
+/* === Gold Glow === */
+.gold-glow {
+  box-shadow: 0 0 20px rgba(212, 160, 23, 0.25), 0 0 40px rgba(212, 160, 23, 0.12);
+}
+
+.gold-glow-hover:hover {
+  box-shadow: 0 0 24px rgba(212, 160, 23, 0.35), 0 0 48px rgba(212, 160, 23, 0.18);
+}
+
+/* === Pill Buttons (Only Shape) === */
+.btn-pill {
+  border-radius: 9999px;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5;
+  transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.btn-pill-primary {
+  background-color: black;
+  color: white;
+  border: none;
+}
+
+.btn-pill-primary:hover {
+  background-color: #3f3f46; /* shade-70 */
+}
+
+.btn-pill-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-pill-outline-dark {
+  background-color: transparent;
+  border: 2px solid white;
+  color: white;
+}
+
+.btn-pill-outline-dark:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.btn-pill-outline-light {
+  background-color: white;
+  border: 1px solid black;
+  color: black;
+}
+
+.btn-pill-outline-light:hover {
+  background-color: #f5f5f5;
+}
+
+.btn-pill-aloe {
+  background: linear-gradient(90deg, #c1fbd4, #d4f9e0);
+  color: black;
+}
+
+.btn-pill-aloe:hover {
+  background: linear-gradient(90deg, #a8e8c0, #c1fbd4);
+}
+
+/* === Pill Tags === */
+.pill-tag {
+  border-radius: 9999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pill-tag-mint {
+  background: linear-gradient(90deg, #c1fbd4, #d4f9e0);
+  color: black;
+}
+
+.pill-tag-shade {
+  background: rgba(212, 160, 23, 0.12);
+  color: #D4A017;
+  border: 1px solid rgba(212, 160, 23, 0.3);
+}
+
+/* === Glass Morphism === */
+.glass {
+  background: rgba(17, 19, 38, 0.65);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-strong {
+  background: rgba(17, 19, 38, 0.8);
+  backdrop-filter: blur(24px) saturate(1.5);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* === Card Lift === */
+.card-lift {
+  transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 280ms, border-color 280ms;
+}
+
+.card-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(212, 160, 23, 0.12);
+  border-color: rgba(212, 160, 23, 0.18) !important;
+}
+
+/* === Gold Glow === */
+.gold-glow {
+  box-shadow: 0 0 20px rgba(212, 160, 23, 0.25), 0 0 40px rgba(212, 160, 23, 0.12);
+}
+
+.gold-glow-hover:hover {
+  box-shadow: 0 0 24px rgba(212, 160, 23, 0.35), 0 0 48px rgba(212, 160, 23, 0.18);
+}
+
+/* === Pill Buttons === */
+.btn-pill {
+  border-radius: 9999px;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5;
+  transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+
+.btn-pill-primary {
+  background-color: black;
+  color: white;
+}
+
+.btn-pill-primary:hover {
+  background-color: #3f3f46;
+}
+
+.btn-pill-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-pill-outline-dark {
+  background-color: transparent;
+  border: 2px solid white;
+  color: white;
+}
+
+.btn-pill-outline-dark:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.btn-pill-outline-light {
+  background-color: white;
+  border: 1px solid black;
+  color: black;
+}
+
+.btn-pill-outline-light:hover {
+  background-color: #f5f5f5;
+}
+
+.btn-pill-aloe {
+  background: linear-gradient(90deg, #c1fbd4, #d4f9e0);
+  color: black;
+}
+
+.btn-pill-aloe:hover {
+  background: linear-gradient(90deg, #a8e8c0, #c1fbd4);
+}
+
+.btn-pill:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* === Pill Tags === */
+.pill-tag {
+  border-radius: 9999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pill-tag-mint {
+  background: linear-gradient(90deg, #c1fbd4, #d4f9e0);
+  color: black;
+}
+
+.pill-tag-shade {
+  background: rgba(212, 160, 23, 0.12);
+  color: #D4A017;
+  border: 1px solid rgba(212, 160, 23, 0.3);
+}
+
+.pill-tag-gold {
+  background: linear-gradient(90deg, #D4A017, #FFD700);
+  color: black;
+}
+
+/* === Glass Morphism === */
+.glass {
+  background: rgba(17, 19, 38, 0.65);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-strong {
+  background: rgba(17, 19, 38, 0.8);
+  backdrop-filter: blur(24px) saturate(1.5);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* === Card Lift === */
+.card-lift {
+  transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 280ms, border-color 280ms;
+}
+
+.card-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(212, 160, 23, 0.12);
+  border-color: rgba(212, 160, 23, 0.18) !important;
+}
+
+/* === Gold Glow === */
+.gold-glow {
+  box-shadow: 0 0 20px rgba(212, 160, 23, 0.25), 0 0 40px rgba(212, 160, 23, 0.12);
+}
+
+/* === Payment Options === */
+.payment-option {
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.payment-option:has(input:checked) {
+  border-color: #D4A017;
+  background: rgba(212, 160, 23, 0.10);
+  box-shadow: 0 0 0 1px rgba(212, 160, 23, 0.35);
+}
+
+.payment-option:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* === Nav Links === */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #D4A017, #FFD700);
+  transition: width 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* === Gold Glow === */
+.gold-glow {
+  box-shadow: 0 0 20px rgba(212, 160, 23, 0.25), 0 0 40px rgba(212, 160, 23, 0.12);
+}
+
+/* === Lucide Icons === */
+.lucide {
+  width: 1em;
+  height: 1em;
+  stroke-width: 1.75;
+}
+
+/* === Scrollbar === */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 160, 23, 0.45);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 160, 23, 0.65);
+}
+
+/* === Toast Animations === */
+.toast-enter {
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+}
+
+.toast-enter-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: all 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toast-exit {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.toast-exit-active {
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+  transition: all 250ms ease;
+}
+
+#toastContainer > div {
+  pointer-events: auto;
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* === Animations === */
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* === Overlay Animations === */
+#cartDrawer,
+#quickViewModal {
+  overscroll-behavior: contain;
+}
+
+#cartDrawer.hidden,
+#quickViewModal.hidden {
+  display: none !important;
+}
+
+#cartBackdrop,
+#quickViewBackdrop {
+  transition: opacity 300ms cubic-bezier(0.16, 1, 0.3, 1), backdrop-filter 300ms;
+}
+
+#cartPanel {
+  will-change: transform;
+  box-shadow: -24px 0 64px rgba(0, 0, 0, 0.55);
+}
+
+#quickViewModal > div:last-child {
+  animation: modalIn 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+#currencyMenu,
+#sortMenu {
+  animation: dropdownIn 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: top right;
+}
+
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+#mobileNav {
+  backdrop-filter: blur(20px);
+  background: rgba(5, 8, 20, 0.96);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
 /* Body lock when overlay open */
-body.overlay-open { overflow: hidden !important; }
+body.overlay-open {
+  overflow: hidden !important;
+}
+
+/* Focus ring */
+.focus-ring-gold:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-val-gold), 0 0 0 4px #050814;
+}
+
+/* Selection */
+::selection {
+  background: var(--color-val-gold);
+  color: var(--color-val-bg);
+}
+
+::-moz-selection {
+  background: var(--color-val-gold);
+  color: var(--color-val-bg);
+}
+
+/* Focus visible */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-val-gold);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 639px) {
+  #cartPanel {
+    width: 100% !important;
+    border-radius: 0 !important;
+  }
+}
+
+/* Ping animation for announcement */
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-ping {
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Card lift */
+.card-lift {
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms;
+}
+
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Lucide icons */
+.lucide {
+  width: 1em;
+  height: 1em;
+}
+
+/* Mobile menu adjustments */
+@media (max-width: 639px) {
+  .cart-drawer {
+    width: 100% !important;
+  }
+}
+
+/* Selection */
+::selection {
+  background: var(--color-val-gold);
+  color: #050814;
+}
+
+::-moz-selection {
+  background: var(--color-val-gold);
+  color: #050814;
+}

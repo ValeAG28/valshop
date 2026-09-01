@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4A017"/>
+      <stop offset="100%" stop-color="#FFD700"/>
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="36" height="36" rx="8" fill="url(#gold)"/>
+  <path d="M16 16h16v16H16z" fill="#000" opacity="0.1"/>
+  <path d="M16 16h8v16H16z" fill="#00A8E1" opacity="0.8"/>
+  <path d="M24 16h8v16H24z" fill="#FF6500" opacity="0.8"/>
+  <path d="M16 24h8v8H16z" fill="#1DB954" opacity="0.8"/>
+  <path d="M24 24h8v8H24z" fill="#E50914" opacity="0.8"/>
+  <text x="24" y="30" font-family="Helvetica, Arial" font-size="8" font-weight="800" fill="#fff" text-anchor="middle">P+D</text>
+</svg>

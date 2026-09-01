@@ -1,11 +1,23 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VAL Digital Services — Tu mundo digital, en un solo lugar</title>
-  <meta name="description" content="Streaming, música, IA, edición, videojuegos, VPN, correos y promociones. Todo lo que necesitas, en un solo lugar.">
+  <title>VAL Digital Services — Your digital world, all in one place</title>
+  <meta name="description" content="Streaming, music, AI, editing, gaming, VPN, email and promos. Everything you need, all in one place. Global instant delivery.">
+  <meta name="theme-color" content="#050814">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
+  <link rel="manifest" href="site.webmanifest">
+  <meta property="og:title" content="VAL Digital Services — Your digital world, all in one place">
+  <meta property="og:description" content="Premium streaming, music, AI, gaming, VPN and more. Instant delivery, 24/7 global support.">
+  <meta property="og:image" content="assets/og-image.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="assets/logo.svg" as="image" type="image/svg+xml">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -33,14 +45,14 @@
       <div class="flex items-center justify-between h-[56px]">
         <div class="flex items-center gap-8">
           <a href="#" class="flex items-center gap-3">
-            <img src="assets/logo.png" alt="VAL" class="h-8 w-8 object-contain rounded-lg">
+            <img src="assets/logo.svg" alt="VAL" class="h-8 w-8 object-contain rounded-lg" onerror="this.src='assets/logo.png'">
             <span class="hidden sm:block font-extrabold tracking-[0.14em] text-xs">VAL DIGITAL SERVICES</span>
           </a>
           <nav class="hidden md:flex items-center gap-6 text-[13px] font-medium">
-            <a href="#" class="nav-link text-white">Inicio</a>
-            <a href="#catalog" class="nav-link text-gray-400 hover:text-white transition">Tienda</a>
-            <a href="#categorias" class="nav-link text-gray-400 hover:text-white transition">Categorías</a>
-            <a href="#soporte" class="nav-link text-gray-400 hover:text-white transition">Soporte</a>
+            <a href="#" class="nav-link text-white">Home</a>
+            <a href="#catalog" class="nav-link text-gray-400 hover:text-white transition">Store</a>
+            <a href="#categorias" class="nav-link text-gray-400 hover:text-white transition">Categories</a>
+            <a href="#soporte" class="nav-link text-gray-400 hover:text-white transition">Support</a>
           </nav>
         </div>
         <div class="flex items-center gap-2">
@@ -49,15 +61,13 @@
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">⌕</span>
           </div>
           <button id="currencyButton" aria-haspopup="true" aria-expanded="false" class="hidden sm:flex items-center gap-1.5 bg-white/[0.07] border border-white/10 rounded-full px-3 py-2 text-xs font-medium hover:bg-white/10 transition">
-            <span>🌐</span> <span id="currencySymbol">ES</span>
+            <span>🌐</span> <span id="currencySymbol">USD</span>
           </button>
           <div id="currencyMenu" role="menu" class="hidden absolute right-4 top-[60px] w-52 bg-[#0c0f1e]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_16px_48px_rgba(0,0,0,0.5)] z-50 overflow-hidden">
-            <div class="px-3 py-2 text-[10px] tracking-widest font-bold text-gray-500">MONEDA</div>
-            <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/[0.06] flex justify-between" data-currency="USD">USD — Dólar <span class="text-gray-500">$</span></button>
+            <div class="px-3 py-2 text-[10px] tracking-widest font-bold text-gray-500">CURRENCY</div>
+            <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/[0.06] flex justify-between" data-currency="USD">USD — US Dollar <span class="text-gray-500">$</span></button>
             <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/[0.06] flex justify-between" data-currency="EUR">EUR — Euro <span class="text-gray-500">€</span></button>
-            <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/[0.06] flex justify-between" data-currency="ARS">ARS — Peso AR <span class="text-gray-500">$</span></button>
-            <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/[0.06] flex justify-between" data-currency="MXN">MXN — Peso MX <span class="text-gray-500">$</span></button>
-            <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/[0.06] flex justify-between" data-currency="COP">COP — Peso CO <span class="text-gray-500">$</span></button>
+            <button class="currency-option w-full text-left px-4 py-2.5 text-sm hover:bg-white/[0.06] flex justify-between" data-currency="GBP">GBP — British Pound <span class="text-gray-500">£</span></button>
           </div>
           <button id="cartButton" aria-label="Carrito" class="flex items-center gap-2 bg-white text-black rounded-full px-4 py-2 text-sm font-semibold hover:bg-gray-100 transition">
             🛒 <span class="hidden sm:inline">Carrito</span> <span id="cartCount" class="bg-black text-white text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">0</span>
@@ -66,7 +76,7 @@
         </div>
       </div>
       <div id="mobileNav" class="hidden md:hidden pb-3 flex flex-col gap-2 text-sm">
-        <a href="#" class="text-white">Inicio</a><a href="#catalog" class="text-gray-400">Tienda</a><a href="#categorias" class="text-gray-400">Categorías</a><a href="#soporte" class="text-gray-400">Soporte</a>
+        <a href="#" class="text-white">Home</a><a href="#catalog" class="text-gray-400">Store</a><a href="#categorias" class="text-gray-400">Categories</a><a href="#soporte" class="text-gray-400">Support</a>
       </div>
     </div>
   </header>
@@ -101,15 +111,15 @@
             <span class="text-[#D4A017]">✦</span> VAL DIGITAL SERVICES
           </div>
           <h1 class="text-[32px] sm:text-[42px] lg:text-[48px] font-black leading-[0.95] tracking-tight">
-            <span class="text-white">Tu mundo digital,</span><br>
-            <span class="text-white">en un</span> <span class="bg-gradient-to-r from-[#8B5CF6] to-[#06B6D4] bg-clip-text text-transparent">solo lugar.</span>
+            <span class="text-white">Your digital world,</span><br>
+            <span class="bg-gradient-to-r from-[#D4A017] to-[#FFD700] bg-clip-text text-transparent">all in one place.</span>
           </h1>
           <p class="text-sm sm:text-[15px] text-gray-400 leading-relaxed mt-4 max-w-[520px]">
-            Streaming, música, IA, edición, videojuegos, VPN, correos y promociones. Todo lo que necesitas, en un solo lugar.
+            Streaming, music, AI, editing, gaming, VPN, email and promos. Everything you need, instantly delivered worldwide.
           </p>
           <div class="flex flex-wrap gap-3 mt-6">
-            <a href="#catalog" class="bg-gradient-to-r from-[#7C5CFF] to-[#3B82F6] hover:from-[#6D4AFF] hover:to-[#2F6BFF] text-white font-semibold px-6 py-3 rounded-xl text-sm shadow-lg shadow-indigo-600/20 transition">Comprar ahora</a>
-            <a href="#categorias" class="bg-white/[0.07] border border-white/10 hover:bg-white/10 text-white font-medium px-6 py-3 rounded-xl text-sm transition">Explorar categorías</a>
+            <a href="#catalog" class="bg-gradient-to-r from-[#D4A017] to-[#FFD700] text-black font-black px-6 py-3 rounded-xl text-sm shadow-lg shadow-[#D4A017]/20 hover:from-[#E5B62E] hover:to-[#FFD700] transition">Shop Now</a>
+            <a href="#categorias" class="bg-white/[0.07] border border-white/10 hover:bg-white/10 text-white font-medium px-6 py-3 rounded-xl text-sm transition">Explore Categories</a>
           </div>
         </div>
         <!-- right visuals -->
@@ -167,18 +177,18 @@
   <section class="bg-[#0a0d1a] border-y border-white/[0.06] py-4">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
       <div class="flex items-center gap-4">
-        <img src="assets/logo.png" alt="VAL" class="h-10 w-10 object-contain">
+        <img src="assets/logo.svg" alt="VAL" class="h-10 w-10 object-contain">
         <div>
           <div class="text-xs tracking-[0.18em] font-bold text-white">VAL DIGITAL SERVICES</div>
-          <div class="text-[10px] tracking-[0.25em] text-gray-500">SERVICIOS DIGITALES</div>
+          <div class="text-[10px] tracking-[0.25em] text-gray-500">DIGITAL SERVICES</div>
         </div>
         <div class="hidden sm:flex items-center gap-2 ml-6 text-xs">
           <span class="text-[#D4A017]">⚡</span>
-          <span class="text-gray-300">Entrega rápida · Atención personalizada</span>
-          <span class="text-gray-600">Compra tus productos digitales de forma fácil y segura.</span>
+          <span class="text-gray-300">Instant delivery · Personal support</span>
+          <span class="text-gray-600">Shop digital products easily & securely.</span>
         </div>
       </div>
-      <a href="https://wa.me/5491123456789" target="_blank" class="bg-[#25D366] hover:bg-[#1ebe5a] text-white text-sm font-semibold px-5 py-2.5 rounded-full flex items-center gap-2 transition">💬 Consultar por WhatsApp</a>
+      <a href="https://wa.me/12025551234" target="_blank" class="bg-[#25D366] hover:bg-[#1ebe5a] text-white text-sm font-semibold px-5 py-2.5 rounded-full flex items-center gap-2 transition">💬 Chat on WhatsApp</a>
     </div>
   </section>
 
@@ -221,22 +231,22 @@
   <section id="soporte" class="py-12 bg-[#050814] border-y border-white/5">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6">
       <div class="max-w-3xl mx-auto text-center mb-8">
-        <h2 class="text-xl font-bold">Centro de Soporte</h2>
-        <p class="text-xs text-gray-500 mt-2">Respuesta promedio &lt; 2h · Lun-Dom 9–21 AR · urgencias 24/7</p>
-        <input id="soporteSearch" placeholder="Buscar en ayuda..." class="mt-4 w-full bg-white/[0.06] border border-white/10 rounded-full px-4 py-3 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D4A017]/30">
+        <h2 class="text-xl font-bold">Support Center</h2>
+        <p class="text-xs text-gray-500 mt-2">Avg response &lt; 2h · 24/7 Global Support</p>
+        <input id="soporteSearch" placeholder="Search help..." class="mt-4 w-full bg-white/[0.06] border border-white/10 rounded-full px-4 py-3 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D4A017]/30">
       </div>
       <div class="grid md:grid-cols-3 gap-4 mb-8">
-        <a href="https://wa.me/5491123456789" target="_blank" class="glass rounded-2xl p-5 hover:bg-white/[0.05] transition">
+        <a href="https://wa.me/12025551234" target="_blank" class="glass rounded-2xl p-5 hover:bg-white/[0.05] transition">
           <div class="h-10 w-10 rounded-xl bg-[#25D366]/15 flex items-center justify-center mb-3">💬</div>
-          <h3 class="font-semibold text-sm">WhatsApp</h3><p class="text-xs text-gray-500 mt-1">+54 9 11 2345-6789<br>Respuesta inmediata</p>
+          <h3 class="font-semibold text-sm">WhatsApp</h3><p class="text-xs text-gray-500 mt-1">+1 202 555 1234<br>Instant reply</p>
         </a>
-        <a href="mailto:soporte@valdigital.com" class="glass rounded-2xl p-5 hover:bg-white/[0.05] transition">
+        <a href="mailto:support@valdigital.com" class="glass rounded-2xl p-5 hover:bg-white/[0.05] transition">
           <div class="h-10 w-10 rounded-xl bg-indigo-500/15 flex items-center justify-center mb-3">✉</div>
-          <h3 class="font-semibold text-sm">Email</h3><p class="text-xs text-gray-500 mt-1">soporte@valdigital.com<br>&lt; 2h en horario</p>
+          <h3 class="font-semibold text-sm">Email</h3><p class="text-xs text-gray-500 mt-1">support@valdigital.com<br>&lt; 2h response</p>
         </a>
         <div class="glass rounded-2xl p-5">
           <div class="h-10 w-10 rounded-xl bg-[#D4A017]/15 flex items-center justify-center mb-3">◷</div>
-          <h3 class="font-semibold text-sm">Horarios</h3><p class="text-xs text-gray-500 mt-1">Lun-Dom 9:00–21:00 AR<br>Urgencias 24/7</p>
+          <h3 class="font-semibold text-sm">Hours</h3><p class="text-xs text-gray-500 mt-1">Mon-Sun 09:00–21:00 UTC<br>24/7 urgent</p>
         </div>
       </div>
       <div id="faqAccordion" class="max-w-3xl mx-auto rounded-2xl border border-white/10 overflow-hidden divide-y divide-white/5"></div>
@@ -247,31 +257,31 @@
   <section id="contacto" class="py-12 bg-[#070a14]">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-8">
       <div>
-        <h2 class="text-xl font-bold">Contacto</h2>
-        <p class="text-xs text-gray-500 mt-2">¿No encontraste respuesta? Te generamos ticket <span class="font-mono text-[#D4A017]">#SOP-XXXXXX</span></p>
+        <h2 class="text-xl font-bold">Contact</h2>
+        <p class="text-xs text-gray-500 mt-2">Can't find an answer? We'll create ticket <span class="font-mono text-[#D4A017]">#SOP-XXXXXX</span></p>
         <form id="contactForm" class="mt-6 space-y-3">
           <div class="grid sm:grid-cols-2 gap-3">
-            <input name="nombre" required placeholder="Nombre *" class="bg-white/[0.06] border border-white/10 rounded-xl px-3 py-3 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D4A017]/30">
+            <input name="nombre" required placeholder="Name *" class="bg-white/[0.06] border border-white/10 rounded-xl px-3 py-3 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D4A017]/30">
             <input name="email" type="email" required placeholder="Email *" class="bg-white/[0.06] border border-white/10 rounded-xl px-3 py-3 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D4A017]/30">
           </div>
-          <input name="telefono" placeholder="Teléfono (opcional)" class="w-full bg-white/[0.06] border border-white/10 rounded-xl px-3 py-3 text-sm placeholder-gray-500">
+          <input name="telefono" placeholder="Phone (optional)" class="w-full bg-white/[0.06] border border-white/10 rounded-xl px-3 py-3 text-sm placeholder-gray-500">
           <select name="asunto" class="w-full bg-[#0f1220] border border-white/10 rounded-xl px-3 py-3 text-sm">
-            <option>Soporte técnico</option><option>Consulta pre-venta</option><option>Problema con pedido</option><option>Otro</option>
+            <option>Technical support</option><option>Pre-sale question</option><option>Order issue</option><option>Other</option>
           </select>
-          <textarea name="mensaje" required rows="4" placeholder="Mensaje *" class="w-full bg-white/[0.06] border border-white/10 rounded-xl px-3 py-3 text-sm placeholder-gray-500"></textarea>
-          <button type="submit" class="w-full bg-gradient-to-r from-[#D4A017] to-[#B8860B] hover:from-[#E5B62E] text-black font-bold py-3 rounded-xl transition">Enviar mensaje</button>
+          <textarea name="mensaje" required rows="4" placeholder="Message *" class="w-full bg-white/[0.06] border border-white/10 rounded-xl px-3 py-3 text-sm placeholder-gray-500"></textarea>
+          <button type="submit" class="w-full bg-gradient-to-r from-[#D4A017] to-[#B8860B] hover:from-[#E5B62E] text-black font-bold py-3 rounded-xl transition">Send message</button>
         </form>
       </div>
       <div class="space-y-4">
         <div class="glass rounded-2xl p-6">
           <h3 class="font-bold">VAL Digital Services</h3>
-          <p class="text-xs text-gray-500 mt-2">Tu tienda de servicios digitales.</p>
+          <p class="text-xs text-gray-500 mt-2">Your digital store — global instant delivery.</p>
           <div class="mt-4 space-y-2 text-sm text-gray-300">
-            <div>📧 soporte@valdigital.com</div>
-            <div>💬 WhatsApp +54 9 11 2345-6789</div>
+            <div>📧 support@valdigital.com</div>
+            <div>💬 WhatsApp +1 202 555 1234</div>
           </div>
         </div>
-        <iframe title="Mapa" src="https://maps.google.com/maps?q=Buenos%20Aires&t=&z=11&ie=UTF8&iwloc=&output=embed" class="w-full h-64 rounded-2xl border border-white/10"></iframe>
+        <iframe title="Map" src="https://maps.google.com/maps?q=Worldwide&t=&z=1&ie=UTF8&iwloc=&output=embed" class="w-full h-64 rounded-2xl border border-white/10"></iframe>
       </div>
     </div>
   </section>
@@ -279,9 +289,9 @@
   <footer class="border-t border-white/5 py-8 bg-[#050814]">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
       <div class="flex items-center gap-6">
-        <a href="#" class="text-gray-400 hover:text-white">Inicio</a><a href="#catalog" class="text-gray-400 hover:text-white">Tienda</a><a href="#soporte" class="text-gray-400 hover:text-white">Soporte</a>
+        <a href="#" class="text-gray-400 hover:text-white">Home</a><a href="#catalog" class="text-gray-400 hover:text-white">Store</a><a href="#soporte" class="text-gray-400 hover:text-white">Support</a>
       </div>
-      <div class="text-gray-600">© 2026 VAL Digital Services. Todos los derechos reservados.</div>
+      <div class="text-gray-600">© 2026 VAL Digital Services. All rights reserved. · Global</div>
     </div>
   </footer>
 
