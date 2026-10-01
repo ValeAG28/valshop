@@ -1,0 +1,54 @@
+{
+  "name": "VAL Digital Services",
+  "short_name": "VAL Digital",
+  "description": "Premium streaming, music, AI, gaming, VPN and more. Instant delivery, 24/7 global support.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050814",
+  "theme_color": "#050814",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/favicon-32x32.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/apple-touch-icon.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml",
+      "purpose": "apple touch icon"
+    },
+    {
+      "src": "assets/logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "entertainment", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Store",
+      "url": "/#catalog",
+      "description": "Browse digital products"
+    },
+    {
+      "name": "Support",
+      "url": "/#soporte",
+      "description": "Get help"
+    },
+    {
+      "name": "Contact",
+      "url": "/#contacto",
+      "description": "Contact us"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+kind: wasmer.io/App.v0
+name: valshop
+owner: ValeAG28
+package: valeag28/valshop
